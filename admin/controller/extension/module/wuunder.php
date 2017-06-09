@@ -27,6 +27,17 @@ class ControllerExtensionModuleWuunder extends Controller
         $data['text_staging_api'] = $this->language->get('text_staging_api');
         $data['text_live_api'] = $this->language->get('text_live_api');
 
+        $data['text_business'] = $this->language->get('text_business');
+        $data['text_email_address'] = $this->language->get('text_email_address');
+        $data['text_family_name'] = $this->language->get('text_family_name');
+        $data['text_given_name'] = $this->language->get('text_given_name');
+        $data['text_locality'] = $this->language->get('text_locality');
+        $data['text_phone_number'] = $this->language->get('text_phone_number');
+        $data['text_street_name'] = $this->language->get('text_street_name');
+        $data['text_house_number'] = $this->language->get('text_house_number');
+        $data['text_zip_code'] = $this->language->get('text_zip_code');
+        $data['text_country'] = $this->language->get('text_country');
+
         $data['entry_status'] = $this->language->get('entry_status');
 
         $data['button_save'] = $this->language->get('button_save');
@@ -63,10 +74,30 @@ class ControllerExtensionModuleWuunder extends Controller
             $data['wuunder_api'] = $this->request->post['wuunder_api'];
             $data['staging_key'] = $this->request->post['wuunder_staging_key'];
             $data['live_key'] = $this->request->post['wuunder_live_key'];
+            $data['business'] = $this->request->post['wuunder_business'];
+            $data['email_address'] = $this->request->post['wuunder_email_address'];
+            $data['family_name'] = $this->request->post['wuunder_family_name'];
+            $data['given_name'] = $this->request->post['wuunder_given_name'];
+            $data['locality'] = $this->request->post['wuunder_locality'];
+            $data['phone_number'] = $this->request->post['wuunder_phone_number'];
+            $data['street_name'] = $this->request->post['wuunder_street_name'];
+            $data['house_number'] = $this->request->post['wuunder_house_number'];
+            $data['zip_code'] = $this->request->post['wuunder_zip_code'];
+            $data['country'] = $this->request->post['wuunder_country'];
         } else {
             $data['wuunder_api'] = $this->config->get('wuunder_api');
             $data['staging_key'] = $this->config->get('wuunder_staging_key');
             $data['live_key'] = $this->config->get('wuunder_live_key');
+            $data['business'] = $this->config->get('wuunder_business');
+            $data['email_address'] = $this->config->get('wuunder_email_address');
+            $data['family_name'] = $this->config->get('wuunder_family_name');
+            $data['given_name'] = $this->config->get('wuunder_given_name');
+            $data['locality'] = $this->config->get('wuunder_locality');
+            $data['phone_number'] = $this->config->get('wuunder_phone_number');
+            $data['street_name'] = $this->config->get('wuunder_street_name');
+            $data['house_number'] = $this->config->get('wuunder_house_number');
+            $data['zip_code'] = $this->config->get('wuunder_zip_code');
+            $data['country'] = $this->config->get('wuunder_country');
         }
 
         $data['header'] = $this->load->controller('common/header');
@@ -83,14 +114,10 @@ class ControllerExtensionModuleWuunder extends Controller
 	  `shipment_id` int(10) NOT NULL AUTO_INCREMENT,
 	  `order_id` int(10) NOT NULL,
 	  `label_id` varchar(255) DEFAULT NULL,
-	  `label_date` int(10) NOT NULL DEFAULT '0',
 	  `label_url` text DEFAULT NULL,
 	  `label_tt_url` text DEFAULT NULL,
+	  `booking_token` varchar(255) NOT NULL,
 	  `booking_url` text DEFAULT NULL,
-	  `retour_id` varchar(255) DEFAULT NULL,
-	  `retour_date` int(10) NOT NULL DEFAULT '0',
-	  `retour_url` text DEFAULT NULL,
-	  `retour_tt_url` text DEFAULT NULL,
 	  PRIMARY KEY (`shipment_id`)
 	) ENGINE=InnoDB  DEFAULT CHARSET=utf8;");
     }
@@ -104,13 +131,160 @@ class ControllerExtensionModuleWuunder extends Controller
         return !$this->error;
     }
 
-    public function getLabelInfo($order_id) {
+    public function getLabelInfo($order_id)
+    {
         $query = $this->db->query("SELECT DISTINCT * FROM wuunder_shipment WHERE order_id = '" . (int)$order_id . "'");
 
         if ($query->num_rows) {
             return $query->row;
         } else {
             return false;
+        }
+    }
+
+    public function test()
+    {
+//        $this->load->model('sale/order');
+        $webhookUrl = urlencode($this->config->get('site_base') . "index.php?route=extension/module/wuunder/webhook&order=1&token=abcdefg");
+        echo "<pre>";
+        var_dump(str_replace("admin/", "", $this->config->get('site_base')) . "index.php?route=extension/module/wuunder/webhook&order=" . 1 . "&token=593a9aef7c050");
+        echo "</pre>";
+    }
+
+    private function separateAddressLine($addressLine)
+    {
+        if (preg_match('/([^\d]+)\s?(.+)/i', $addressLine, $result)) {
+            // $result[1] will have the steet name
+            $streetName = $result[1];
+            // and $result[2] is the number part.
+            $streetNumber = $result[2];
+
+            return array($streetName, $streetNumber);
+        }
+        return array("", "");
+    }
+
+    private function buildWuunderData($order_id)
+    {
+        $this->load->model('sale/order');
+        $this->load->model('catalog/product');
+        $orderData = $this->model_sale_order->getOrder($order_id);
+        $orderProducts = $this->model_sale_order->getOrderProducts($order_id);
+        $customerAdr = array(
+            'business' => $orderData['shipping_company'],
+            'email_address' => $orderData['email'],
+            'family_name' => $orderData['shipping_lastname'],
+            'given_name' => $orderData['shipping_firstname'],
+            'locality' => $orderData['shipping_city'],
+            'phone_number' => $orderData['telephone'],
+            'street_name' => $this->separateAddressLine($orderData['shipping_address_1'])[0],
+            'house_number' => $this->separateAddressLine($orderData['shipping_address_1'])[1],
+            'zip_code' => $orderData['shipping_postcode'],
+            'country' => $orderData['shipping_iso_code_2']
+        );
+
+        $pickupAdr = array(
+            'business' => $this->config->get('wuunder_business'),
+            'email_address' => $this->config->get('wuunder_email_address'),
+            'family_name' => $this->config->get('wuunder_family_name'),
+            'given_name' => $this->config->get('wuunder_given_name'),
+            'locality' => $this->config->get('wuunder_locality'),
+            'phone_number' => $this->config->get('wuunder_phone_number'),
+            'street_name' => $this->config->get('wuunder_street_name'),
+            'house_number' => $this->config->get('wuunder_house_number'),
+            'zip_code' => $this->config->get('wuunder_zip_code'),
+            'country' => $this->config->get('wuunder_country')
+        );
+
+        $orderDescriptions = [];
+        $orderPicture = null;
+        $totalValue = 0;
+        foreach ($orderProducts as $orderProduct) {
+            array_push($orderDescriptions, $orderProduct['name']);
+            if (is_null($orderPicture)) {
+                $orderPicture = base64_encode(file_get_contents("../image/" . $this->model_catalog_product->getProduct($orderProduct['product_id'])['image']));
+            }
+            $totalValue += intval(floatval($orderProduct['price']) * 100);
+        }
+
+        $defLength = 80;
+        $defWidth = 50;
+        $defHeight = 35;
+        $defWeight = 20000;
+        $defValue = 25 * 100;
+
+        return array(
+            'description' => implode(", ", $orderDescriptions),
+            'personal_message' => $orderData['comment'],
+            'picture' => $orderPicture,
+            'customer_reference' => $orderData['customer_id'],
+            'value' => $totalValue ? $totalValue : $defValue,
+            'kind' => null,
+            'length' => $defLength,
+            'width' => $defWidth,
+            'height' => $defHeight,
+            'weight' => $defWeight,
+            'delivery_address' => $customerAdr,
+            'pickup_address' => $pickupAdr
+        );
+    }
+
+    public function generateBookingUrl()
+    {
+        if (isset($_REQUEST['order'])) {
+            $order_id = $_REQUEST['order'];
+            $booking_token = uniqid();
+            $this->db->query("INSERT INTO `wuunder_shipment` (order_id, booking_token) VALUES (" . $order_id . ", '" . $booking_token . "');");
+
+            $redirectUrl = urlencode($this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
+            $webhookUrl = urlencode(str_replace("admin/", "", $this->config->get('site_base')) . "index.php?route=extension/module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
+
+            if (intval($this->config->get('wuunder_api'))) {
+                $apiUrl = 'https://api.wuunder.co/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
+                $apiKey = $this->config->get('wuunder_live_key');
+            } else {
+                $apiUrl = 'https://api-staging.wuunder.co/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
+                $apiKey = $this->config->get('wuunder_staging_key');
+            }
+
+            $wuunderData = $this->buildWuunderData($order_id);
+
+            // Encode variables
+            $json = json_encode($wuunderData);
+
+            // Setup API connection
+            $cc = curl_init($apiUrl);
+
+            curl_setopt($cc, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $apiKey, 'Content-type: application/json'));
+            curl_setopt($cc, CURLOPT_POST, 1);
+            curl_setopt($cc, CURLOPT_POSTFIELDS, $json);
+            curl_setopt($cc, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($cc, CURLOPT_VERBOSE, 1);
+            curl_setopt($cc, CURLOPT_HEADER, 1);
+
+            // Don't log base64 image string
+            $wuunderData['picture'] = 'base64 string removed';
+
+            // Execute the cURL, fetch the XML
+            $result = curl_exec($cc);
+            $header_size = curl_getinfo($cc, CURLINFO_HEADER_SIZE);
+            $header = substr($result, 0, $header_size);
+            preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!i", $header, $matches);
+            $url = $matches[1];
+
+            // Close connection
+            curl_close($cc);
+
+            $this->db->query("UPDATE `wuunder_shipment` SET booking_url = '" . $url . "' WHERE order_id = " . $order_id . " AND booking_token = '" . $booking_token . "'");
+
+            if (!(substr($url, 0, 5) === "http:" || substr($url, 0, 6) === "https:")) {
+                if (intval($this->config->get('wuunder_api'))) {
+                    $url = 'https://api.wuunder.co' . $url;
+                } else {
+                    $url = 'https://api-staging.wuunder.co' . $url;
+                }
+            }
+            header("Location: " . $url);
         }
     }
 }

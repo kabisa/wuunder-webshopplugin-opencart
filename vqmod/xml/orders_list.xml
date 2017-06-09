@@ -15,7 +15,7 @@
                 ]]></search>
             <add><![CDATA[
                 <?php if (is_null($order['label_id'])) { ?>
-                <a><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a><a href="<?php echo $order['view']; ?>
+                <a href="<?php echo $order['generate_booking_url']; ?>"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a><a href="<?php echo $order['view']; ?>
                 <?php } else { ?>
                 <a><img class="wuunder-icon" src="/admin/view/image/wuunder/print-label.png" /></a><a href="<?php echo $order['view']; ?>
                 <?php } ?>

@@ -51,6 +51,66 @@
                                 <input type="text" id="input-live-key" name="wuunder_live_key" class="form-control" value="<?php echo $live_key; ?>"/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_business"><?php echo $text_business; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_business" name="wuunder_business" class="form-control" value="<?php echo $business; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_email_address"><?php echo $text_email_address; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_email_address" name="wuunder_email_address" class="form-control" value="<?php echo $email_address; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_family_name"><?php echo $text_family_name; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_family_name" name="wuunder_family_name" class="form-control" value="<?php echo $family_name; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_given_name"><?php echo $text_given_name; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_given_name" name="wuunder_given_name" class="form-control" value="<?php echo $given_name; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_locality"><?php echo $text_locality; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_locality" name="wuunder_locality" class="form-control" value="<?php echo $locality; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_phone_number"><?php echo $text_phone_number; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_phone_number" name="wuunder_phone_number" class="form-control" value="<?php echo $phone_number; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_street_name"><?php echo $text_street_name; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_street_name" name="wuunder_street_name" class="form-control" value="<?php echo $street_name; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_house_number"><?php echo $text_house_number; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_house_number" name="wuunder_house_number" class="form-control" value="<?php echo $house_number; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_zip_code"><?php echo $text_zip_code; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_zip_code" name="wuunder_zip_code" class="form-control" value="<?php echo $zip_code; ?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="wuunder_country"><?php echo $text_country; ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="wuunder_country" name="wuunder_country" class="form-control" value="<?php echo $country; ?>"/>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

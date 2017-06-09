@@ -3,7 +3,6 @@
         xmlns="https://github.com/vqmod/vqmod"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://github.com/vqmod/vqmod https://raw.githubusercontent.com/vqmod/vqmod/master/vqmod.xsd">
-    >
     <id>Add label info to order list</id>
     <version>1.0</version>
     <vqmver>2.6.1</vqmver>
@@ -21,6 +20,7 @@
 				'order_id'      => $result['order_id'],
 				'label_id'      => ($label_info ? $label_info['label_id'] : null),
 				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
+				'generate_booking_url'  => $this->config->get('site_base') . "index.php?route=extension/module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
                 ]]></add>
         </operation>
     </file>

@@ -11,17 +11,6 @@ $_['live_api']           = 'Live API';
 $_['text_staging_api']   = 'Staging API key';
 $_['text_live_api']      = 'Live API key';
 
-$_['text_business']      = 'Company';
-$_['text_email_address']      = 'Email';
-$_['text_family_name']      = 'Lastname';
-$_['text_given_name']      = 'Firstname';
-$_['text_locality']      = 'City';
-$_['text_phone_number']      = 'Phonenumber';
-$_['text_street_name']      = 'Street';
-$_['text_house_number']      = 'House number';
-$_['text_zip_code']      = 'Zip code';
-$_['text_country']      = 'Country code (ISO 3166-1 alpha-2 format)';
-
 // Entry
 $_['entry_status']     = 'API';
 
