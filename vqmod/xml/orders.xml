@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification
+        xmlns="https://github.com/vqmod/vqmod"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://github.com/vqmod/vqmod https://raw.githubusercontent.com/vqmod/vqmod/master/vqmod.xsd">
+    >
+    <id>Add label info to order list</id>
+    <version>1.0</version>
+    <vqmver>2.6.1</vqmver>
+    <author>wuunder</author>
+    <file name="admin/controller/sale/order.php">
+        <operation info="replace ABC with 123">
+            <search position="replace" offset="4"><![CDATA[
+            $results = $this->model_sale_order->getOrders($filter_data);
+                ]]></search>
+            <add><![CDATA[
+            $results = $this->model_sale_order->getOrders($filter_data);
+                foreach ($results as $result) {
+            $label_info = $this->load->controller('extension/module/wuunder/getLabelInfo', $result['order_id']);
+			$data['orders'][] = array(
+				'order_id'      => $result['order_id'],
+				'label_id'      => ($label_info ? $label_info['label_id'] : null),
+				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
+                ]]></add>
+        </operation>
+    </file>
+</modification>
