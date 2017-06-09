@@ -13,8 +13,8 @@ class ControllerExtensionModuleWuunder extends Controller
         if (isset($_REQUEST['order']) && isset($_REQUEST['token'])) {
             $order_id = $_REQUEST['order'];
             $booking_token = $_REQUEST['token'];
-            $ss = $this->db->escape(json_encode($_REQUEST));
-            $this->db->query("UPDATE `wuunder_shipment` SET label_url = '" . $ss . "', label_tt_url = 'tt_test' WHERE order_id = " . $order_id . " AND booking_token = '" . $booking_token . "'");
+            $data = json_decode(file_get_contents('php://input'), true);
+            $this->db->query("UPDATE `wuunder_shipment` SET label_id = '" . $this->db->escape($data['shipment']['id']) . "', label_url = '" . $this->db->escape($data['shipment']['label_url']) . "', label_tt_url = '" . $this->db->escape($data['shipment']['track_and_trace_url']) . "' WHERE order_id = " . $order_id . " AND booking_token = '" . $booking_token . "'");
         }
     }
 }

@@ -19,6 +19,7 @@
 			$data['orders'][] = array(
 				'order_id'      => $result['order_id'],
 				'label_id'      => ($label_info ? $label_info['label_id'] : null),
+				'label_url'      => ($label_info ? $label_info['label_url'] : null),
 				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
 				'generate_booking_url'  => $this->config->get('site_base') . "index.php?route=extension/module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
                 ]]></add>
