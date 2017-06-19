@@ -154,19 +154,22 @@ class ControllerExtensionModuleWuunder extends Controller
 
     public function test()
     {
-        $this->load->model('sale/order');
-        echo "<pre>";
-        var_dump($this->model_sale_order->getOrderProducts(10));
-        echo "</pre>";
+//        $this->load->model('sale/order');
+//        echo "<pre>";
+//        var_dump($this->model_sale_order->getOrder(18));
+//        echo "</pre>";
     }
 
     private function separateAddressLine($addressLine)
     {
-        if (preg_match('/([^\d]+)\s?(.+)/i', $addressLine, $result)) {
-            // $result[1] will have the steet name
-            $streetName = $result[1];
-            // and $result[2] is the number part.
-            $streetNumber = $result[2];
+        if (preg_match('/^(?<name>\w[\s\w]+?)\s*(?<num>\d+\s*[a-z]?)$', $addressLine, $result)) {
+            if (count($result) === 2) {
+                $streetName = $result[1];
+                $streetNumber = $result[2];
+            } else {
+                $streetName = $addressLine;
+                $streetNumber = "";
+            }
 
             return array($streetName, $streetNumber);
         }
