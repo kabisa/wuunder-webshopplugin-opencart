@@ -14,11 +14,19 @@
                 <a href="<?php echo $order['view']; ?>
                 ]]></search>
             <add><![CDATA[
-                <?php if (is_null($order['label_id'])) { ?>
-                <a href="<?php echo $order['generate_booking_url']; ?>" class="btn"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a><a href="<?php echo $order['view']; ?>
-                <?php } else { ?>
-                <a href="<?php echo $order['label_url']; ?>" class="btn" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/print-label.png" /></a><a href="<?php echo $order['view']; ?>
+                <ul class="wuunder-icons">
+                <?php if (is_null($order['label_id'])) {
+                    if (is_null($order['booking_url'])) { ?>
+                        <a href="<?php echo $order['generate_booking_url']; ?>" class=""><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a>
+                    <?php } else { ?>
+                        <a href="<?php echo $order['booking_url']; ?>" class=""><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a>
+                    <?php }
+                } else { ?>
+                    <a href="<?php echo $order['label_url']; ?>" class="" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/print-label.png" /></a>
+                    <a href="<?php echo $order['label_tt_url']; ?>" class="" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/in-transit.png" /></a>
                 <?php } ?>
+                </ul>
+                <a href="<?php echo $order['view']; ?>
                 ]]></add>
         </operation>
     </file>

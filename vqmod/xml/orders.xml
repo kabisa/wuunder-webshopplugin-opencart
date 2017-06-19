@@ -8,7 +8,7 @@
     <vqmver>2.6.1</vqmver>
     <author>wuunder</author>
     <file name="admin/controller/sale/order.php">
-        <operation info="replace ABC with 123">
+        <operation info="add order info">
             <search position="replace" offset="4"><![CDATA[
             $results = $this->model_sale_order->getOrders($filter_data);
                 ]]></search>
@@ -20,8 +20,20 @@
 				'order_id'      => $result['order_id'],
 				'label_id'      => ($label_info ? $label_info['label_id'] : null),
 				'label_url'      => ($label_info ? $label_info['label_url'] : null),
+				'label_tt_url'      => ($label_info ? $label_info['label_tt_url'] : null),
 				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
 				'generate_booking_url'  => $this->config->get('site_base') . "index.php?route=extension/module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
+                ]]></add>
+        </operation>
+        <operation info="add warning info">
+            <search position="replace"><![CDATA[
+            if (isset($this->request->post['selected'])) {
+                ]]></search>
+            <add><![CDATA[
+            if (array_key_exists("label", $_REQUEST) && $_REQUEST['label'] === "created") {
+                $data['success'] = $label_info = $this->load->controller('extension/module/wuunder/getLabelCreatedMessage');
+            }
+            if (isset($this->request->post['selected'])) {
                 ]]></add>
         </operation>
     </file>

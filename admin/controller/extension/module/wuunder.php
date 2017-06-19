@@ -6,8 +6,8 @@ class ControllerExtensionModuleWuunder extends Controller
 
     public function index()
     {
-        $this->load->language('extension/module/wuunder');
 
+        $this->load->language('extension/module/wuunder');
         $this->document->setTitle($this->language->get('heading_title'));
 
         $this->load->model('setting/setting');
@@ -109,17 +109,8 @@ class ControllerExtensionModuleWuunder extends Controller
 
     public function install()
     {
-        $this->db->query("DROP TABLE IF EXISTS `wuunder_shipment`;");
-        $this->db->query("CREATE TABLE IF NOT EXISTS wuunder_shipment (
-	  `shipment_id` int(10) NOT NULL AUTO_INCREMENT,
-	  `order_id` int(10) NOT NULL,
-	  `label_id` varchar(255) DEFAULT NULL,
-	  `label_url` text DEFAULT NULL,
-	  `label_tt_url` text DEFAULT NULL,
-	  `booking_token` varchar(255) NOT NULL,
-	  `booking_url` text DEFAULT NULL,
-	  PRIMARY KEY (`shipment_id`)
-	) ENGINE=InnoDB  DEFAULT CHARSET=utf8;");
+        $this->load->model('extension/module/wuunder');
+        $this->model_extension_module_wuunder->installTable();
     }
 
     protected function validate()
@@ -133,21 +124,21 @@ class ControllerExtensionModuleWuunder extends Controller
 
     public function getLabelInfo($order_id)
     {
-        $query = $this->db->query("SELECT DISTINCT * FROM wuunder_shipment WHERE order_id = '" . (int)$order_id . "'");
+        $this->load->model('extension/module/wuunder');
+        return $this->model_extension_module_wuunder->getLabel($order_id);
+    }
 
-        if ($query->num_rows) {
-            return $query->row;
-        } else {
-            return false;
-        }
+    public function getLabelCreatedMessage()
+    {
+        $this->load->language('extension/module/wuunder');
+        return $this->language->get('label_created');
     }
 
     public function test()
     {
-//        $this->load->model('sale/order');
-        $webhookUrl = urlencode($this->config->get('site_base') . "index.php?route=extension/module/wuunder/webhook&order=1&token=abcdefg");
+        $this->load->model('sale/order');
         echo "<pre>";
-        var_dump(str_replace("admin/", "", $this->config->get('site_base')) . "index.php?route=extension/module/wuunder/webhook&order=" . 1 . "&token=593a9aef7c050");
+        var_dump($this->model_sale_order->getOrderProducts(10));
         echo "</pre>";
     }
 
@@ -204,7 +195,7 @@ class ControllerExtensionModuleWuunder extends Controller
             if (is_null($orderPicture)) {
                 $orderPicture = base64_encode(file_get_contents("../image/" . $this->model_catalog_product->getProduct($orderProduct['product_id'])['image']));
             }
-            $totalValue += intval(floatval($orderProduct['price']) * 100);
+            $totalValue += intval(floatval($orderProduct['price']) * 100 * intval($orderProduct['quantity']));
         }
 
         $defLength = 80;
@@ -217,7 +208,7 @@ class ControllerExtensionModuleWuunder extends Controller
             'description' => implode(", ", $orderDescriptions),
             'personal_message' => $orderData['comment'],
             'picture' => $orderPicture,
-            'customer_reference' => $orderData['customer_id'],
+            'customer_reference' => $order_id,
             'value' => $totalValue ? $totalValue : $defValue,
             'kind' => null,
             'length' => $defLength,
@@ -233,58 +224,65 @@ class ControllerExtensionModuleWuunder extends Controller
     {
         if (isset($_REQUEST['order'])) {
             $order_id = $_REQUEST['order'];
-            $booking_token = uniqid();
-            $this->db->query("INSERT INTO `wuunder_shipment` (order_id, booking_token) VALUES (" . $order_id . ", '" . $booking_token . "');");
+            $this->load->model('extension/module/wuunder');
+            if (!$this->model_extension_module_wuunder->checkLabelExists($order_id)) {
+                $booking_token = uniqid();
+                $this->model_extension_module_wuunder->insertBookingToken($order_id, $booking_token);
 
-            $redirectUrl = urlencode($this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
-            $webhookUrl = urlencode(str_replace("admin/", "", $this->config->get('site_base')) . "index.php?route=extension/module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
+                $redirectUrl = urlencode($this->config->get('site_base') . "index.php?route=sale/order&label=created&token=" . $this->session->data['token']);
+                $webhookUrl = urlencode(str_replace("admin/", "", $this->config->get('site_base')) . "index.php?route=extension/module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
 
-            if (intval($this->config->get('wuunder_api'))) {
-                $apiUrl = 'https://api.wuunder.co/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
-                $apiKey = $this->config->get('wuunder_live_key');
-            } else {
-                $apiUrl = 'https://api-staging.wuunder.co/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
-                $apiKey = $this->config->get('wuunder_staging_key');
-            }
-
-            $wuunderData = $this->buildWuunderData($order_id);
-
-            // Encode variables
-            $json = json_encode($wuunderData);
-
-            // Setup API connection
-            $cc = curl_init($apiUrl);
-
-            curl_setopt($cc, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $apiKey, 'Content-type: application/json'));
-            curl_setopt($cc, CURLOPT_POST, 1);
-            curl_setopt($cc, CURLOPT_POSTFIELDS, $json);
-            curl_setopt($cc, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($cc, CURLOPT_VERBOSE, 1);
-            curl_setopt($cc, CURLOPT_HEADER, 1);
-
-            // Don't log base64 image string
-            $wuunderData['picture'] = 'base64 string removed';
-
-            // Execute the cURL, fetch the XML
-            $result = curl_exec($cc);
-            $header_size = curl_getinfo($cc, CURLINFO_HEADER_SIZE);
-            $header = substr($result, 0, $header_size);
-            preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!i", $header, $matches);
-            $url = $matches[1];
-
-            // Close connection
-            curl_close($cc);
-
-            $this->db->query("UPDATE `wuunder_shipment` SET booking_url = '" . $url . "' WHERE order_id = " . $order_id . " AND booking_token = '" . $booking_token . "'");
-
-            if (!(substr($url, 0, 5) === "http:" || substr($url, 0, 6) === "https:")) {
                 if (intval($this->config->get('wuunder_api'))) {
-                    $url = 'https://api.wuunder.co' . $url;
+                    $apiUrl = 'https://api.wuunder.co/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
+                    $apiKey = $this->config->get('wuunder_live_key');
                 } else {
-                    $url = 'https://api-staging.wuunder.co' . $url;
+                    $apiUrl = 'https://api-staging.wuunder.co/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
+                    $apiKey = $this->config->get('wuunder_staging_key');
                 }
+
+                $wuunderData = $this->buildWuunderData($order_id);
+
+                // Encode variables
+                $json = json_encode($wuunderData);
+
+                // Setup API connection
+                $cc = curl_init($apiUrl);
+
+                curl_setopt($cc, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $apiKey, 'Content-type: application/json'));
+                curl_setopt($cc, CURLOPT_POST, 1);
+                curl_setopt($cc, CURLOPT_POSTFIELDS, $json);
+                curl_setopt($cc, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($cc, CURLOPT_VERBOSE, 1);
+                curl_setopt($cc, CURLOPT_HEADER, 1);
+
+                // Don't log base64 image string
+                $wuunderData['picture'] = 'base64 string removed';
+
+                // Execute the cURL, fetch the XML
+                $result = curl_exec($cc);
+                $header_size = curl_getinfo($cc, CURLINFO_HEADER_SIZE);
+                $header = substr($result, 0, $header_size);
+                preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!i", $header, $matches);
+                $url = $matches[1];
+
+                // Close connection
+                curl_close($cc);
+
+                $this->model_extension_module_wuunder->setBookingUrl($order_id, $booking_token, $url);
+
+                if (!(substr($url, 0, 5) === "http:" || substr($url, 0, 6) === "https:")) {
+                    if (intval($this->config->get('wuunder_api'))) {
+                        $url = 'https://api.wuunder.co' . $url;
+                    } else {
+                        $url = 'https://api-staging.wuunder.co' . $url;
+                    }
+                }
+                header("Location: " . $url);
+            } else {
+                header("Location: " . $this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
             }
-            header("Location: " . $url);
+        } else {
+            header("Location: " . $this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
         }
     }
 }

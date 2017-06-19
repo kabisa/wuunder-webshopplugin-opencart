@@ -22,6 +22,8 @@ $_['text_house_number']      = 'House number';
 $_['text_zip_code']      = 'Zip code';
 $_['text_country']      = 'Country code (ISO 3166-1 alpha-2 format)';
 
+$_['label_created'] = "Label is successfully created";
+
 // Entry
 $_['entry_status']     = 'API';
 
