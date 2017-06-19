@@ -154,26 +154,26 @@ class ControllerExtensionModuleWuunder extends Controller
 
     public function test()
     {
-//        $this->load->model('sale/order');
-//        echo "<pre>";
-//        var_dump($this->model_sale_order->getOrder(18));
-//        echo "</pre>";
+        $this->load->model('sale/order');
+        echo "<pre>";
+//        var_dump($this->model_sale_order->getOrder(19));
+        var_dump($this->separateAddressLine("Noorderpoort"));
+        echo "</pre>";
     }
 
     private function separateAddressLine($addressLine)
     {
-        if (preg_match('/^(?<name>\w[\s\w]+?)\s*(?<num>\d+\s*[a-z]?)$', $addressLine, $result)) {
+        if (preg_match('/^(?<name>\w[\s\w]+?)\s*(?<num>\d+\s*[a-z]?)$/', $addressLine, $result)) {
             if (count($result) === 2) {
                 $streetName = $result[1];
                 $streetNumber = $result[2];
             } else {
-                $streetName = $addressLine;
-                $streetNumber = "";
+                return array($addressLine, "");
             }
 
             return array($streetName, $streetNumber);
         }
-        return array("", "");
+        return array($addressLine, "");
     }
 
     private function buildWuunderData($order_id)
