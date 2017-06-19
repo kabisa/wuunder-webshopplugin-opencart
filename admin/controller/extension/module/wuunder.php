@@ -134,6 +134,24 @@ class ControllerExtensionModuleWuunder extends Controller
         return $this->language->get('label_created');
     }
 
+    public function getCreateLabelMessage()
+    {
+        $this->load->language('extension/module/wuunder');
+        return $this->language->get('create_label');
+    }
+
+    public function getDownloadLabelMessage()
+    {
+        $this->load->language('extension/module/wuunder');
+        return $this->language->get('download_label');
+    }
+
+    public function getFollowShipmentMessage()
+    {
+        $this->load->language('extension/module/wuunder');
+        return $this->language->get('follow_shipment');
+    }
+
     public function test()
     {
         $this->load->model('sale/order');

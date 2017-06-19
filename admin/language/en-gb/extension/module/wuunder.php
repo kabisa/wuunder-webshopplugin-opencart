@@ -23,6 +23,9 @@ $_['text_zip_code']      = 'Zip code';
 $_['text_country']      = 'Country code (ISO 3166-1 alpha-2 format)';
 
 $_['label_created'] = "Label is successfully created";
+$_['create_label'] = "Create shipment label";
+$_['download_label'] = "Download shipment label";
+$_['follow_shipment'] = "Track shipment";
 
 // Entry
 $_['entry_status']     = 'API';
