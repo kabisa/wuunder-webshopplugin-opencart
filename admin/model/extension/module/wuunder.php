@@ -40,12 +40,23 @@ class ModelExtensionModuleWuunder extends Model
         return $query->num_rows > 0;
     }
 
-    public function insertBookingToken($order_id, $booking_token) {
+    public function insertBookingToken($order_id, $booking_token)
+    {
         $this->db->query("INSERT INTO `wuunder_shipment` (order_id, booking_token) VALUES (" . $order_id . ", '" . $booking_token . "');");
     }
 
-    public function setBookingUrl($order_id, $booking_token, $booking_url) {
+    public function setBookingUrl($order_id, $booking_token, $booking_url)
+    {
         $this->db->query("UPDATE `wuunder_shipment` SET booking_url = '" . $booking_url . "' WHERE order_id = " . $order_id . " AND booking_token = '" . $booking_token . "'");
+    }
+
+    public function getOrderStatusCode($order_id) {
+        $query = $this->db->query("SELECT order_status_id FROM `" . DB_PREFIX . "order` o WHERE o.order_id = ". $order_id);
+        if ($query->num_rows) {
+            return $query->row['order_status_id'];
+        } else {
+            return false;
+        }
     }
 
 }

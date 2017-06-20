@@ -18,6 +18,7 @@
             $data['follow_shipment'] = $this->load->controller('extension/module/wuunder/getFollowShipmentMessage');
 
             $results = $this->model_sale_order->getOrders($filter_data);
+            $this->load->model('extension/module/wuunder');
                 foreach ($results as $result) {
             $label_info = $this->load->controller('extension/module/wuunder/getLabelInfo', $result['order_id']);
 			$data['orders'][] = array(
@@ -26,6 +27,7 @@
 				'label_url'      => ($label_info ? $label_info['label_url'] : null),
 				'label_tt_url'      => ($label_info ? $label_info['label_tt_url'] : null),
 				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
+				'order_status_code' => $this->model_extension_module_wuunder->getOrderStatusCode($result['order_id']),
 				'generate_booking_url'  => $this->config->get('site_base') . "index.php?route=extension/module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
                 ]]></add>
         </operation>
