@@ -113,6 +113,12 @@ class ControllerExtensionModuleWuunder extends Controller
         $this->model_extension_module_wuunder->installTable();
     }
 
+    public function uninstall()
+    {
+        $this->load->model('extension/module/wuunder');
+        $this->model_extension_module_wuunder->uninstallTable();
+    }
+
     protected function validate()
     {
         if (!$this->user->hasPermission('modify', 'extension/module/wuunder')) {
@@ -157,14 +163,14 @@ class ControllerExtensionModuleWuunder extends Controller
         $this->load->model('sale/order');
         echo "<pre>";
 //        var_dump($this->model_sale_order->getOrder(19));
-        var_dump($this->separateAddressLine("Noorderpoort"));
+        var_dump($this->separateAddressLine("Bohemen 79"));
         echo "</pre>";
     }
 
     private function separateAddressLine($addressLine)
     {
-        if (preg_match('/^(?<name>\w[\s\w]+?)\s*(?<num>\d+\s*[a-z]?)$/', $addressLine, $result)) {
-            if (count($result) === 2) {
+        if (preg_match('/^([^\d]*[^\d\s]) *(\d.*)$/', $addressLine, $result)) {
+            if (count($result) >= 2) {
                 $streetName = $result[1];
                 $streetNumber = $result[2];
             } else {

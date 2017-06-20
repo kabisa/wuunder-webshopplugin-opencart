@@ -18,6 +18,11 @@ class ModelExtensionModuleWuunder extends Model
 	) ENGINE=InnoDB  DEFAULT CHARSET=utf8;");
     }
 
+    public function uninstallTable()
+    {
+        $this->db->query("DROP TABLE IF EXISTS `wuunder_shipment`;");
+    }
+
     public function getLabel($order_id)
     {
         $query = $this->db->query("SELECT DISTINCT * FROM wuunder_shipment WHERE order_id = '" . (int)$order_id . "'");
