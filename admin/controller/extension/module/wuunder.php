@@ -163,7 +163,7 @@ class ControllerExtensionModuleWuunder extends Controller
         $this->load->model('sale/order');
         echo "<pre>";
 //        var_dump($this->model_sale_order->getOrder(19));
-        var_dump($this->separateAddressLine("Bohemen 79"));
+        var_dump($this->model_sale_order->getOrder(28));
         echo "</pre>";
     }
 
@@ -188,17 +188,22 @@ class ControllerExtensionModuleWuunder extends Controller
         $this->load->model('catalog/product');
         $orderData = $this->model_sale_order->getOrder($order_id);
         $orderProducts = $this->model_sale_order->getOrderProducts($order_id);
+        if (empty($orderData['shipping_address_1']) && !empty($orderData['payment_address_1'])) {
+            $field_prefix = "payment";
+        } else {
+            $field_prefix = "shipping";
+        }
         $customerAdr = array(
-            'business' => $orderData['shipping_company'],
+            'business' => $orderData[$field_prefix.'_company'],
             'email_address' => $orderData['email'],
-            'family_name' => $orderData['shipping_lastname'],
-            'given_name' => $orderData['shipping_firstname'],
-            'locality' => $orderData['shipping_city'],
+            'family_name' => $orderData[$field_prefix.'_lastname'],
+            'given_name' => $orderData[$field_prefix.'_firstname'],
+            'locality' => $orderData[$field_prefix.'_city'],
             'phone_number' => $orderData['telephone'],
-            'street_name' => $this->separateAddressLine($orderData['shipping_address_1'])[0],
-            'house_number' => $this->separateAddressLine($orderData['shipping_address_1'])[1],
-            'zip_code' => $orderData['shipping_postcode'],
-            'country' => $orderData['shipping_iso_code_2']
+            'street_name' => $this->separateAddressLine($orderData[$field_prefix.'_address_1'])[0],
+            'house_number' => $this->separateAddressLine($orderData[$field_prefix.'_address_1'])[1],
+            'zip_code' => $orderData[$field_prefix.'_postcode'],
+            'country' => $orderData[$field_prefix.'_iso_code_2']
         );
 
         $pickupAdr = array(
@@ -236,7 +241,8 @@ class ControllerExtensionModuleWuunder extends Controller
             'personal_message' => $orderData['comment'],
             'picture' => $orderPicture,
             'customer_reference' => $order_id,
-            'value' => $totalValue ? $totalValue : $defValue,
+//            'value' => $totalValue ? $totalValue : $defValue,
+            'value' => null,
             'kind' => null,
             'length' => $defLength,
             'width' => $defWidth,
