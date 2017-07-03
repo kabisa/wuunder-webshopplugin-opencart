@@ -37,6 +37,8 @@ class ControllerModuleWuunder extends Controller
         $data['text_house_number'] = $this->language->get('text_house_number');
         $data['text_zip_code'] = $this->language->get('text_zip_code');
         $data['text_country'] = $this->language->get('text_country');
+        $data['text_advanced_section'] = $this->language->get('text_advanced_section');
+        $data['text_custom_field_housenumber'] = $this->language->get('text_custom_field_housenumber');
 
         $data['entry_status'] = $this->language->get('entry_status');
 
@@ -84,6 +86,7 @@ class ControllerModuleWuunder extends Controller
             $data['house_number'] = $this->request->post['wuunder_house_number'];
             $data['zip_code'] = $this->request->post['wuunder_zip_code'];
             $data['country'] = $this->request->post['wuunder_country'];
+            $data['custom_housenumber'] = $this->request->post['wuunder_custom_housenumber'];
         } else {
             $data['wuunder_api'] = $this->config->get('wuunder_api');
             $data['staging_key'] = $this->config->get('wuunder_staging_key');
@@ -98,6 +101,7 @@ class ControllerModuleWuunder extends Controller
             $data['house_number'] = $this->config->get('wuunder_house_number');
             $data['zip_code'] = $this->config->get('wuunder_zip_code');
             $data['country'] = $this->config->get('wuunder_country');
+            $data['custom_housenumber'] = $this->config->get('wuunder_custom_housenumber');
         }
 
         $data['header'] = $this->load->controller('common/header');
@@ -161,13 +165,9 @@ class ControllerModuleWuunder extends Controller
     public function test()
     {
         $this->load->model('sale/order');
+        $orderData = $this->model_sale_order->getOrder(4);
         echo "<pre>";
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $_SERVER['HTTPS']) {
-            $protocol = "https";
-        } else {
-            $protocol = "http";
-        }
-        var_dump($this->request->server['SERVER_ADDR']);
+        var_dump($orderData);
         echo "</pre>";
     }
 
@@ -197,6 +197,11 @@ class ControllerModuleWuunder extends Controller
         } else {
             $field_prefix = "shipping";
         }
+        if (!empty($this->config->get('wuunder_custom_housenumber')) && isset($orderData['shipping_custom_field'][$this->config->get('wuunder_custom_housenumber')])) {
+            $house_number = $orderData['shipping_custom_field'][$this->config->get('wuunder_custom_housenumber')];
+        } else {
+            $house_number = $this->separateAddressLine($orderData[$field_prefix . '_address_1'])[1];
+        }
         $customerAdr = array(
             'business' => $orderData[$field_prefix . '_company'],
             'email_address' => $orderData['email'],
@@ -205,7 +210,7 @@ class ControllerModuleWuunder extends Controller
             'locality' => $orderData[$field_prefix . '_city'],
             'phone_number' => $orderData['telephone'],
             'street_name' => $this->separateAddressLine($orderData[$field_prefix . '_address_1'])[0],
-            'house_number' => $this->separateAddressLine($orderData[$field_prefix . '_address_1'])[1],
+            'house_number' => $house_number,
             'zip_code' => $orderData[$field_prefix . '_postcode'],
             'country' => $orderData[$field_prefix . '_iso_code_2']
         );
@@ -271,8 +276,8 @@ class ControllerModuleWuunder extends Controller
                     $protocol = "http://";
                 }
 
-                $redirectUrl = urlencode($protocol . $this->request->server['SERVER_ADDR'] . "/admin/index.php?route=sale/order&label=created&token=" . $this->session->data['token']);
-                $webhookUrl = urlencode($protocol . $this->request->server['SERVER_ADDR'] . "/index.php?route=module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
+                $redirectUrl = urlencode($protocol . $this->request->server['SERVER_NAME'] . "/admin/index.php?route=sale/order&label=created&token=" . $this->session->data['token']);
+                $webhookUrl = urlencode($protocol . $this->request->server['SERVER_NAME'] . "/index.php?route=module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
 
                 if (intval($this->config->get('wuunder_api'))) {
                     $apiUrl = 'https://api.wuunder.co/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;

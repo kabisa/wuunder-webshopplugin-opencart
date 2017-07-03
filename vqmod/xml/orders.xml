@@ -33,7 +33,7 @@
 				'label_tt_url'      => ($label_info ? $label_info['label_tt_url'] : null),
 				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
 				'order_status_code' => $this->model_module_wuunder->getOrderStatusCode($result['order_id']),
-				'generate_booking_url'  => $protocol . $this->request->server['SERVER_ADDR'] . "/admin/index.php?route=module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
+				'generate_booking_url'  => $protocol . $this->request->server['SERVER_NAME'] . "/admin/index.php?route=module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
                 ]]></add>
         </operation>
         <operation info="add warning info">
