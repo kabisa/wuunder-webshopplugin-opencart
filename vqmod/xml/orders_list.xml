@@ -6,7 +6,7 @@
     >
     <id>Add wuunder icons</id>
     <version>1.0</version>
-    <vqmver>2.6.1</vqmver>
+    <vqmver>2.5.1</vqmver>
     <author>wuunder</author>
     <file name="admin/view/template/sale/order_list.tpl">
         <operation info="add wuunder icons">
