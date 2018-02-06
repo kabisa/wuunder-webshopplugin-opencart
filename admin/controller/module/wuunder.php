@@ -268,7 +268,7 @@ class ControllerModuleWuunder extends Controller
             $this->load->model('module/wuunder');
             if (!$this->model_module_wuunder->checkLabelExists($order_id)) {
                 $booking_token = uniqid();
-                $this->model_module_wuunder->insertBookingToken($order_id, $booking_token);
+//                $this->model_module_wuunder->insertBookingToken($order_id, $booking_token);
 
                 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $_SERVER['HTTPS']) {
                     $protocol = "https://";
@@ -315,7 +315,7 @@ class ControllerModuleWuunder extends Controller
                 // Close connection
                 curl_close($cc);
 
-                $this->model_module_wuunder->setBookingUrl($order_id, $booking_token, $url);
+                $this->model_module_wuunder->insertBookingUrlAndToken($order_id, $url, $booking_token);
 
                 if (!(substr($url, 0, 5) === "http:" || substr($url, 0, 6) === "https:")) {
                     if (intval($this->config->get('wuunder_api'))) {

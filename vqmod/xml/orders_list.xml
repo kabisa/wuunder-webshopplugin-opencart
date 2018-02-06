@@ -16,7 +16,7 @@
             <add><![CDATA[
                 <ul class="wuunder-icons">
                 <?php if (is_null($order['label_id'])) {
-                    if (is_null($order['booking_url'])) { ?>
+                    if (is_null($order['booking_url']) || empty($order['booking_url)) { ?>
                         <a href="<?php echo $order['generate_booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png"/></a>
                     <?php } else { ?>
                         <a href="<?php echo $order['booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a>
