@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionModuleWuunder extends Controller
+class ControllerModuleWuunder extends Controller
 {
 
     public function index()

@@ -1,6 +1,6 @@
 <?php
 
-class ModelExtensionModuleWuunder extends Model
+class ModelModuleWuunder extends Model
 {
 
     public function installTable()
@@ -38,6 +38,11 @@ class ModelExtensionModuleWuunder extends Model
     {
         $query = $this->db->query("SELECT 1 FROM wuunder_shipment WHERE order_id = '" . (int)$order_id . "'");
         return $query->num_rows > 0;
+    }
+
+    public function insertBookingUrlAndToken($order_id, $booking_url, $booking_token)
+    {
+        $this->db->query("INSERT INTO `wuunder_shipment` (order_id, booking_url, booking_token) VALUES (" . $order_id . ", '" . $booking_url . "', '" . $booking_token . "');");
     }
 
     public function insertBookingToken($order_id, $booking_token)
