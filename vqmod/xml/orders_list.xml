@@ -6,7 +6,7 @@
     >
     <id>Add wuunder icons</id>
     <version>1.0</version>
-    <vqmver>2.5.1</vqmver>
+    <vqmver>2.6.3</vqmver>
     <author>wuunder</author>
     <file name="admin/view/template/sale/order_list.tpl">
         <operation info="add wuunder icons">
@@ -16,7 +16,7 @@
             <add><![CDATA[
                 <ul class="wuunder-icons">
                 <?php if (is_null($order['label_id'])) {
-                    if (is_null($order['booking_url']) || empty($order['booking_url)) { ?>
+                    if (is_null($order['booking_url']) || empty($order['booking_url'])) { ?>
                         <a href="<?php echo $order['generate_booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png"/></a>
                     <?php } else { ?>
                         <a href="<?php echo $order['booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a>

@@ -8,7 +8,7 @@
     <version>1.0</version>
     <vqmver>2.6.1</vqmver>
     <author>wuunder</author>
-    <file name="admin/view/template/common/header.tpl">
+    <file name="admin/view/template/common/header.twig">
         <operation info="replace ABC with 123">
             <search position="replace"><![CDATA[
                 <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
