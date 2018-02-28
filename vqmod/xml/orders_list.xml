@@ -8,25 +8,25 @@
     <version>1.0</version>
     <vqmver>2.6.3</vqmver>
     <author>wuunder</author>
-    <file name="admin/view/template/sale/order_list.tpl">
+    <file name="admin/view/template/sale/order_list.twig">
         <operation info="add wuunder icons">
             <search position="replace"><![CDATA[
-                <a href="<?php echo $order['view']; ?>
+              <div style="min-width: 120px;">
                 ]]></search>
             <add><![CDATA[
+              <div style="min-width: 170px;">
                 <ul class="wuunder-icons">
-                <?php if (is_null($order['label_id'])) {
-                    if (is_null($order['booking_url']) || empty($order['booking_url'])) { ?>
-                        <a href="<?php echo $order['generate_booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png"/></a>
-                    <?php } else { ?>
-                        <a href="<?php echo $order['booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a>
-                    <?php }
-                } else { ?>
-                    <a href="<?php echo $order['label_url']; ?>" title="<?php echo $download_label; ?>" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/print-label.png" /></a>
-                    <a href="<?php echo $order['label_tt_url']; ?>" title="<?php echo $follow_shipment; ?>" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/in-transit.png" /></a>
-                <?php } ?>
+                  {% if order.label_id is null %}
+                    {% if order.booking_url is null or order.booking_url is empty %}
+                        <a href="{{ order.generate_booking_url }}" title="{{ create_label }}"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png"/></a>
+                      {% else %}
+                        <a href="{{ order.booking_url }}" title="{{ create_label }}"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a>
+                    {% endif %}
+                  {% else %}
+                    <a href="{{ order.label_url }}" title="{{ download_label }}" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/print-label.png" /></a>
+                    <a href="{{ order.label_tt_url }}" title=" {{ follow_shipment }}" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/in-transit.png" /></a>
+                  {% endif %}
                 </ul>
-                <a href="<?php echo $order['view']; ?>
                 ]]></add>
         </operation>
     </file>
