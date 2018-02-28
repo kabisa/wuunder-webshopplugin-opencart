@@ -13,7 +13,7 @@ class ControllerExtensionModuleWuunder extends Controller
         $this->load->model('setting/setting');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-            $this->model_setting_setting->editSetting('wuunder', $this->request->post);
+            $this->model_setting_setting->editSetting('module_wuunder', $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
             $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', true));
@@ -40,7 +40,7 @@ class ControllerExtensionModuleWuunder extends Controller
         $data['text_advanced_section'] = $this->language->get('text_advanced_section');
         $data['text_custom_field_housenumber'] = $this->language->get('text_custom_field_housenumber');
 
-        $data['entry_status'] = $this->language->get('entry_status');
+        $data['module_entry_status'] = $this->language->get('module_entry_status');
 
         $data['button_save'] = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
