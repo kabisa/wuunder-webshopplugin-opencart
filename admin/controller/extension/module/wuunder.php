@@ -1,11 +1,9 @@
 <?php
 
-class ControllerExtensionModuleWuunder extends Controller
-{
+class ControllerExtensionModuleWuunder extends Controller {
     private $error = array();
 
-    public function index()
-    {
+    public function index() {
 
         $this->load->language('extension/module/wuunder');
         $this->document->setTitle($this->language->get('heading_title'));
@@ -117,59 +115,49 @@ class ControllerExtensionModuleWuunder extends Controller
         $this->response->setOutput($this->load->view('extension/wuunder', $data));
     }
 
-    public function install()
-    {
+    public function install() {
         $this->load->model('extension/module/wuunder');
         $this->model_extension_module_wuunder->installTable();
     }
 
-    public function uninstall()
-    {
+    public function uninstall() {
         $this->load->model('extension/module/wuunder');
         $this->model_extension_module_wuunder->uninstallTable();
     }
 
-    protected function validate()
-    {
+    protected function validate() {
         if (!$this->user->hasPermission('modify', 'extension/module/wuunder')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
-
         return !$this->error;
     }
 
-    public function getLabelInfo($order_id)
-    {
+    public function getLabelInfo($order_id) {
         $this->load->model('extension/module/wuunder');
         return $this->model_extension_module_wuunder->getLabel($order_id);
     }
 
-    public function getLabelCreatedMessage()
-    {
+    public function getLabelCreatedMessage() {
         $this->load->language('extension/module/wuunder');
         return $this->language->get('label_created');
     }
 
-    public function getCreateLabelMessage()
-    {
+    public function getCreateLabelMessage() {
         $this->load->language('extension/module/wuunder');
         return $this->language->get('create_label');
     }
 
-    public function getDownloadLabelMessage()
-    {
+    public function getDownloadLabelMessage() {
         $this->load->language('extension/module/wuunder');
         return $this->language->get('download_label');
     }
 
-    public function getFollowShipmentMessage()
-    {
+    public function getFollowShipmentMessage() {
         $this->load->language('extension/module/wuunder');
         return $this->language->get('follow_shipment');
     }
 
-    public function test()
-    {
+    public function test() {
         $this->load->model('sale/order');
         $orderData = $this->model_sale_order->getOrder(4);
         echo "<pre>";
@@ -177,8 +165,7 @@ class ControllerExtensionModuleWuunder extends Controller
         echo "</pre>";
     }
 
-    private function separateAddressLine($addressLine)
-    {
+    private function separateAddressLine($addressLine) {
         if (preg_match('/^([^\d]*[^\d\s]) *(\d.*)$/', $addressLine, $result)) {
             if (count($result) >= 2) {
                 $streetName = $result[1];
@@ -192,8 +179,7 @@ class ControllerExtensionModuleWuunder extends Controller
         return array($addressLine, "");
     }
 
-    private function buildWuunderData($order_id)
-    {
+    private function buildWuunderData($order_id) {
         $this->load->model('sale/order');
         $this->load->model('catalog/product');
         $orderData = $this->model_sale_order->getOrder($order_id);
@@ -267,8 +253,7 @@ class ControllerExtensionModuleWuunder extends Controller
         );
     }
 
-    public function generateBookingUrl()
-    {
+    public function generateBookingUrl() {
         if (isset($_REQUEST['order'])) {
             $order_id = $_REQUEST['order'];
             $this->load->model('extension/module/wuunder');

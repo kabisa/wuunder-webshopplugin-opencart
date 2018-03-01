@@ -18,13 +18,13 @@
                 <ul class="wuunder-icons">
                   {% if order.label_id is null %}
                     {% if order.booking_url is null or order.booking_url is empty %}
-                        <a href="{{ order.generate_booking_url }}" title="{{ create_label }}"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png"/></a>
+                        <a href="{{ order.generate_booking_url }}" title="{{ create_label }}"><img class="wuunder-icon" src="/admin/view/image/wuunder/create_label.png"/></a>
                       {% else %}
-                        <a href="{{ order.booking_url }}" title="{{ create_label }}"><img class="wuunder-icon" src="/admin/view/image/wuunder/create-label.png" /></a>
+                        <a href="{{ order.booking_url }}" title="{{ create_label }}"><img class="wuunder-icon" src="/admin/view/image/wuunder/create_label.png" /></a>
                     {% endif %}
                   {% else %}
-                    <a href="{{ order.label_url }}" title="{{ download_label }}" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/print-label.png" /></a>
-                    <a href="{{ order.label_tt_url }}" title=" {{ follow_shipment }}" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/in-transit.png" /></a>
+                    <a href="{{ order.label_url }}" title="{{ download_label }}" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/print_label.png" /></a>
+                    <a href="{{ order.label_tt_url }}" title=" {{ follow_shipment }}" target="_blank"><img class="wuunder-icon" src="/admin/view/image/wuunder/in_transit.png" /></a>
                   {% endif %}
                 </ul>
                 ]]></add>

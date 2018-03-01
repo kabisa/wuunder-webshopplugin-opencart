@@ -6,7 +6,7 @@
     >
     <id>wuunder styling</id>
     <version>1.0</version>
-    <vqmver>2.6.1</vqmver>
+    <vqmver>2.6.3</vqmver>
     <author>wuunder</author>
     <file name="admin/view/template/common/header.twig">
         <operation info="replace ABC with 123">

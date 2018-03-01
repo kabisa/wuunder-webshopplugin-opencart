@@ -1,15 +1,12 @@
 <?php
 
-class ControllerExtensionModuleWuunder extends Controller
-{
+class ControllerExtensionModuleWuunder extends Controller {
 
-    public function index()
-    {
+    public function index() {
 
     }
 
-    public function webhook()
-    {
+    public function webhook() {
         if (isset($_REQUEST['order']) && isset($_REQUEST['user_token'])) {
             $order_id = $_REQUEST['order'];
             $booking_token = $_REQUEST['user_token'];
