@@ -1,6 +1,6 @@
 <?php
 
-class ModelModuleWuunder extends Model
+class ModelExtensionModuleWuunder extends Model
 {
 
     public function installTable()

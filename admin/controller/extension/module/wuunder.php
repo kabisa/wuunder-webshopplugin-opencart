@@ -1,6 +1,6 @@
 <?php
 
-class ControllerModuleWuunder extends Controller
+class ControllerExtensionModuleWuunder extends Controller
 {
     private $error = array();
 
@@ -16,7 +16,7 @@ class ControllerModuleWuunder extends Controller
             $this->model_setting_setting->editSetting('wuunder', $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
-            $this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'] . '&type=module', true));
+            $this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=module', true));
         }
 
         $data['heading_title'] = $this->language->get('heading_title');
@@ -65,10 +65,10 @@ class ControllerModuleWuunder extends Controller
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('module/wuunder', 'token=' . $this->session->data['token'], true)
+            'href' => $this->url->link('extension/module/wuunder', 'token=' . $this->session->data['token'], true)
         );
 
-        $data['action'] = $this->url->link('module/wuunder', 'token=' . $this->session->data['token'], true);
+        $data['action'] = $this->url->link('extension/module/wuunder', 'token=' . $this->session->data['token'], true);
 
         $data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'] . '&type=module', true);
 
@@ -108,24 +108,24 @@ class ControllerModuleWuunder extends Controller
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('module/wuunder.tpl', $data));
+        $this->response->setOutput($this->load->view('extension/module/wuunder.tpl', $data));
     }
 
     public function install()
     {
-        $this->load->model('module/wuunder');
-        $this->model_module_wuunder->installTable();
+        $this->load->model('extension/module/wuunder');
+        $this->model_extension_module_wuunder->installTable();
     }
 
     public function uninstall()
     {
-        $this->load->model('module/wuunder');
-        $this->model_module_wuunder->uninstallTable();
+        $this->load->model('extension/module/wuunder');
+        $this->model_extension_module_wuunder->uninstallTable();
     }
 
     protected function validate()
     {
-        if (!$this->user->hasPermission('modify', 'module/wuunder')) {
+        if (!$this->user->hasPermission('modify', 'extension/module/wuunder')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -134,31 +134,31 @@ class ControllerModuleWuunder extends Controller
 
     public function getLabelInfo($order_id)
     {
-        $this->load->model('module/wuunder');
-        return $this->model_module_wuunder->getLabel($order_id);
+        $this->load->model('extension/module/wuunder');
+        return $this->model_extension_module_wuunder->getLabel($order_id);
     }
 
     public function getLabelCreatedMessage()
     {
-        $this->load->language('module/wuunder');
+        $this->load->language('extension/module/wuunder');
         return $this->language->get('label_created');
     }
 
     public function getCreateLabelMessage()
     {
-        $this->load->language('module/wuunder');
+        $this->load->language('extension/module/wuunder');
         return $this->language->get('create_label');
     }
 
     public function getDownloadLabelMessage()
     {
-        $this->load->language('module/wuunder');
+        $this->load->language('extension/module/wuunder');
         return $this->language->get('download_label');
     }
 
     public function getFollowShipmentMessage()
     {
-        $this->load->language('module/wuunder');
+        $this->load->language('extension/module/wuunder');
         return $this->language->get('follow_shipment');
     }
 
@@ -257,7 +257,8 @@ class ControllerModuleWuunder extends Controller
             'height' => $defHeight,
             'weight' => $defWeight,
             'delivery_address' => $customerAdr,
-            'pickup_address' => $pickupAdr
+            'pickup_address' => $pickupAdr,
+            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.0.0", "plugin" => "1.0"))
         );
     }
 
@@ -265,29 +266,30 @@ class ControllerModuleWuunder extends Controller
     {
         if (isset($_REQUEST['order'])) {
             $order_id = $_REQUEST['order'];
-            $this->load->model('module/wuunder');
-            if (!$this->model_module_wuunder->checkLabelExists($order_id)) {
+            $this->load->model('extension/module/wuunder');
+            if (!$this->model_extension_module_wuunder->checkLabelExists($order_id)) {
                 $booking_token = uniqid();
-//                $this->model_module_wuunder->insertBookingToken($order_id, $booking_token);
-
-                if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $_SERVER['HTTPS']) {
-                    $protocol = "https://";
-                } else {
-                    $protocol = "http://";
-                }
-
-                $redirectUrl = urlencode($protocol . $this->request->server['SERVER_NAME'] . "/admin/index.php?route=sale/order&label=created&token=" . $this->session->data['token']);
-                $webhookUrl = urlencode($protocol . $this->request->server['SERVER_NAME'] . "/index.php?route=module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
 
                 if (intval($this->config->get('wuunder_api'))) {
-                    $apiUrl = 'https://api.wearewuunder.com/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
+                    $apiUrl = 'https://api.wearewuunder.com/api/bookings';
                     $apiKey = $this->config->get('wuunder_live_key');
                 } else {
-                    $apiUrl = 'https://api-staging.wearewuunder.com/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
+                    $apiUrl = 'https://api-staging.wearewuunder.com/api/bookings';
                     $apiKey = $this->config->get('wuunder_staging_key');
                 }
 
                 $wuunderData = $this->buildWuunderData($order_id);
+
+                if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+                    $base = HTTP_SERVER;
+                    $catBase = HTTP_CATALOG;
+                } else {
+                    $base = HTTPS_SERVER;
+                    $catBase = HTTP_CATALOG;
+                }
+
+                $wuunderData['redirect_url'] = $base . "index.php?route=sale/order&label=created&token=" . $this->session->data['token'];
+                $wuunderData['webhook_url'] = $catBase . "index.php?route=extension/module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token;
 
                 // Encode variables
                 $json = json_encode($wuunderData);
@@ -315,7 +317,7 @@ class ControllerModuleWuunder extends Controller
                 // Close connection
                 curl_close($cc);
 
-                $this->model_module_wuunder->insertBookingUrlAndToken($order_id, $url, $booking_token);
+                $this->model_extension_module_wuunder->insertBookingUrlAndToken($order_id, $url, $booking_token);
 
                 if (!(substr($url, 0, 5) === "http:" || substr($url, 0, 6) === "https:")) {
                     if (intval($this->config->get('wuunder_api'))) {
