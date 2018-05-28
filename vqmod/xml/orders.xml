@@ -21,19 +21,20 @@
             $this->load->model('module/wuunder');
                 foreach ($results as $result) {
             $label_info = $this->load->controller('module/wuunder/getLabelInfo', $result['order_id']);
-            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $_SERVER['HTTPS']) {
-                $protocol = "https://";
-            } else {
-                $protocol = "http://";
-            }
+            if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+                $base = HTTP_SERVER;
+             } else {
+                $base = HTTPS_SERVER;
+             }
 			$data['orders'][] = array(
 				'order_id'      => $result['order_id'],
 				'label_id'      => ($label_info ? $label_info['label_id'] : null),
 				'label_url'      => ($label_info ? $label_info['label_url'] : null),
 				'label_tt_url'      => ($label_info ? $label_info['label_tt_url'] : null),
 				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
+				'base'          => $base,
 				'order_status_code' => $this->model_module_wuunder->getOrderStatusCode($result['order_id']),
-				'generate_booking_url'  => $protocol . $this->request->server['SERVER_NAME'] . "/admin/index.php?route=module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
+				'generate_booking_url'  => $base . "index.php?route=module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
                 ]]></add>
         </operation>
         <operation info="add warning info">

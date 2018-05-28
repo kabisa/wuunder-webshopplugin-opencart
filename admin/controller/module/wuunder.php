@@ -257,7 +257,16 @@ class ControllerModuleWuunder extends Controller
             'height' => $defHeight,
             'weight' => $defWeight,
             'delivery_address' => $customerAdr,
-            'pickup_address' => $pickupAdr
+            'pickup_address' => $pickupAdr,
+            'source' => array(
+                "product" => "Opencart 2 extension",
+                "version" => array(
+                    "build" => "1.2.1",
+                    "plugin" => "1.0"),
+                "platform" => array(
+                    "name" => "OpenCart",
+                    "build" => VERSION
+                ))
         );
     }
 
@@ -268,16 +277,17 @@ class ControllerModuleWuunder extends Controller
             $this->load->model('module/wuunder');
             if (!$this->model_module_wuunder->checkLabelExists($order_id)) {
                 $booking_token = uniqid();
-//                $this->model_module_wuunder->insertBookingToken($order_id, $booking_token);
 
-                if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' && $_SERVER['HTTPS']) {
-                    $protocol = "https://";
+                if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+                    $base = HTTP_SERVER;
+                    $catBase = HTTP_CATALOG;
                 } else {
-                    $protocol = "http://";
+                    $base = HTTPS_SERVER;
+                    $catBase = HTTP_CATALOG;
                 }
 
-                $redirectUrl = urlencode($protocol . $this->request->server['SERVER_NAME'] . "/admin/index.php?route=sale/order&label=created&token=" . $this->session->data['token']);
-                $webhookUrl = urlencode($protocol . $this->request->server['SERVER_NAME'] . "/index.php?route=module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
+                $redirectUrl = urlencode($base . "index.php?route=sale/order&label=created&token=" . $this->session->data['token']);
+                $webhookUrl = urlencode($catBase . "index.php?route=module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token);
 
                 if (intval($this->config->get('wuunder_api'))) {
                     $apiUrl = 'https://api.wearewuunder.com/api/bookings?redirect_url=' . $redirectUrl . '&webhook_url=' . $webhookUrl;
