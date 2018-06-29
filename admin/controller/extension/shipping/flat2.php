@@ -3,7 +3,7 @@ class ControllerExtensionShippingFlat2 extends Controller {
 	private $error = array();
 
 	public function index() {
-		$this->load->language('extension/shipping/flat2');
+		$this->load->language('extension/shipping/flatwuunder');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -26,6 +26,7 @@ class ControllerExtensionShippingFlat2 extends Controller {
 		$data['text_none'] = $this->language->get('text_none');
 
 		$data['entry_cost'] = $this->language->get('entry_cost');
+        $data['entry_title'] = $this->language->get('entry_title');
 		$data['entry_tax_class'] = $this->language->get('entry_tax_class');
 		$data['entry_geo_zone'] = $this->language->get('entry_geo_zone');
 		$data['entry_status'] = $this->language->get('entry_status');
@@ -66,6 +67,12 @@ class ControllerExtensionShippingFlat2 extends Controller {
 		} else {
 			$data['flat2_cost'] = $this->config->get('flat2_cost');
 		}
+
+        if (isset($this->request->post['flat2_title'])) {
+            $data['flat2_title'] = $this->request->post['flat2_title'];
+        } else {
+            $data['flat2_title'] = $this->config->get('flat2_title');
+        }
 
 		if (isset($this->request->post['flat2_tax_class_id'])) {
 			$data['flat2_tax_class_id'] = $this->request->post['flat2_tax_class_id'];

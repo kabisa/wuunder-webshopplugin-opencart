@@ -1,5 +1,5 @@
 <?php
-class ControllerExtensionShippingFlat1 extends Controller {
+class ControllerExtensionShippingFlat6 extends Controller {
 	private $error = array();
 
 	public function index() {
@@ -10,7 +10,7 @@ class ControllerExtensionShippingFlat1 extends Controller {
 		$this->load->model('setting/setting');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-			$this->model_setting_setting->editSetting('flat1', $this->request->post);
+			$this->model_setting_setting->editSetting('flat6', $this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -26,7 +26,7 @@ class ControllerExtensionShippingFlat1 extends Controller {
 		$data['text_none'] = $this->language->get('text_none');
 
 		$data['entry_cost'] = $this->language->get('entry_cost');
-		$data['entry_title'] = $this->language->get('entry_title');
+        $data['entry_title'] = $this->language->get('entry_title');
 		$data['entry_tax_class'] = $this->language->get('entry_tax_class');
 		$data['entry_geo_zone'] = $this->language->get('entry_geo_zone');
 		$data['entry_status'] = $this->language->get('entry_status');
@@ -55,66 +55,66 @@ class ControllerExtensionShippingFlat1 extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('extension/shipping/flat1', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('extension/shipping/flat6', 'token=' . $this->session->data['token'], true)
 		);
 
-		$data['action'] = $this->url->link('extension/shipping/flat1', 'token=' . $this->session->data['token'], true);
+		$data['action'] = $this->url->link('extension/shipping/flat6', 'token=' . $this->session->data['token'], true);
 
 		$data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=shipping', true);
 
-		if (isset($this->request->post['flat1_cost'])) {
-			$data['flat1_cost'] = $this->request->post['flat1_cost'];
+		if (isset($this->request->post['flat6_cost'])) {
+			$data['flat6_cost'] = $this->request->post['flat6_cost'];
 		} else {
-			$data['flat1_cost'] = $this->config->get('flat1_cost');
+			$data['flat6_cost'] = $this->config->get('flat6_cost');
 		}
 
-        if (isset($this->request->post['flat1_title'])) {
-            $data['flat1_title'] = $this->request->post['flat1_title'];
+        if (isset($this->request->post['flat6_title'])) {
+            $data['flat6_title'] = $this->request->post['flat6_title'];
         } else {
-            $data['flat1_title'] = $this->config->get('flat1_title');
+            $data['flat6_title'] = $this->config->get('flat6_title');
         }
 
-		if (isset($this->request->post['flat1_tax_class_id'])) {
-			$data['flat1_tax_class_id'] = $this->request->post['flat1_tax_class_id'];
+		if (isset($this->request->post['flat6_tax_class_id'])) {
+			$data['flat6_tax_class_id'] = $this->request->post['flat6_tax_class_id'];
 		} else {
-			$data['flat1_tax_class_id'] = $this->config->get('flat1_tax_class_id');
+			$data['flat6_tax_class_id'] = $this->config->get('flat6_tax_class_id');
 		}
 
 		$this->load->model('localisation/tax_class');
 
 		$data['tax_classes'] = $this->model_localisation_tax_class->getTaxClasses();
 
-		if (isset($this->request->post['flat1_geo_zone_id'])) {
-			$data['flat1_geo_zone_id'] = $this->request->post['flat1_geo_zone_id'];
+		if (isset($this->request->post['flat6_geo_zone_id'])) {
+			$data['flat6_geo_zone_id'] = $this->request->post['flat6_geo_zone_id'];
 		} else {
-			$data['flat1_geo_zone_id'] = $this->config->get('flat1_geo_zone_id');
+			$data['flat6_geo_zone_id'] = $this->config->get('flat6_geo_zone_id');
 		}
 
 		$this->load->model('localisation/geo_zone');
 
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 
-		if (isset($this->request->post['flat1_status'])) {
-			$data['flat1_status'] = $this->request->post['flat1_status'];
+		if (isset($this->request->post['flat6_status'])) {
+			$data['flat6_status'] = $this->request->post['flat6_status'];
 		} else {
-			$data['flat1_status'] = $this->config->get('flat1_status');
+			$data['flat6_status'] = $this->config->get('flat6_status');
 		}
 
-		if (isset($this->request->post['flat1_sort_order'])) {
-			$data['flat1_sort_order'] = $this->request->post['flat1_sort_order'];
+		if (isset($this->request->post['flat6_sort_order'])) {
+			$data['flat6_sort_order'] = $this->request->post['flat6_sort_order'];
 		} else {
-			$data['flat1_sort_order'] = $this->config->get('flat1_sort_order');
+			$data['flat6_sort_order'] = $this->config->get('flat6_sort_order');
 		}
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('extension/shipping/flat1', $data));
+		$this->response->setOutput($this->load->view('extension/shipping/flat6', $data));
 	}
 
 	protected function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/shipping/flat1')) {
+		if (!$this->user->hasPermission('modify', 'extension/shipping/flat6')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 

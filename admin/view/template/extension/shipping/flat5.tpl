@@ -3,7 +3,7 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-        <button type="submit" form="form-flat4" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <button type="submit" form="form-flat5" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -24,26 +24,26 @@
         <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_edit; ?></h3>
       </div>
       <div class="panel-body">
-        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-flat4" class="form-horizontal">
+        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-flat5" class="form-horizontal">
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-cost"><?php echo $entry_cost; ?></label>
             <div class="col-sm-10">
-              <input type="text" name="flat4_cost" value="<?php echo $flat4_cost; ?>" placeholder="<?php echo $entry_cost; ?>" id="input-cost" class="form-control" />
+              <input type="text" name="flat5_cost" value="<?php echo $flat5_cost; ?>" placeholder="<?php echo $entry_cost; ?>" id="input-cost" class="form-control" />
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-title"><?php echo $entry_title; ?></label>
             <div class="col-sm-10">
-              <input type="text" name="flat4_title" value="<?php echo $flat4_title; ?>" placeholder="<?php echo $entry_title; ?>" id="input-title" class="form-control" />
+              <input type="text" name="flat5_title" value="<?php echo $flat5_title; ?>" placeholder="<?php echo $entry_title; ?>" id="input-title" class="form-control" />
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-tax-class"><?php echo $entry_tax_class; ?></label>
             <div class="col-sm-10">
-              <select name="flat4_tax_class_id" id="input-tax-class" class="form-control">
+              <select name="flat5_tax_class_id" id="input-tax-class" class="form-control">
                 <option value="0"><?php echo $text_none; ?></option>
                 <?php foreach ($tax_classes as $tax_class) { ?>
-                <?php if ($tax_class['tax_class_id'] == $flat4_tax_class_id) { ?>
+                <?php if ($tax_class['tax_class_id'] == $flat5_tax_class_id) { ?>
                 <option value="<?php echo $tax_class['tax_class_id']; ?>" selected="selected"><?php echo $tax_class['title']; ?></option>
                 <?php } else { ?>
                 <option value="<?php echo $tax_class['tax_class_id']; ?>"><?php echo $tax_class['title']; ?></option>
@@ -55,10 +55,10 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-geo-zone"><?php echo $entry_geo_zone; ?></label>
             <div class="col-sm-10">
-              <select name="flat4_geo_zone_id" id="input-geo-zone" class="form-control">
+              <select name="flat5_geo_zone_id" id="input-geo-zone" class="form-control">
                 <option value="0"><?php echo $text_all_zones; ?></option>
                 <?php foreach ($geo_zones as $geo_zone) { ?>
-                <?php if ($geo_zone['geo_zone_id'] == $flat4_geo_zone_id) { ?>
+                <?php if ($geo_zone['geo_zone_id'] == $flat5_geo_zone_id) { ?>
                 <option value="<?php echo $geo_zone['geo_zone_id']; ?>" selected="selected"><?php echo $geo_zone['name']; ?></option>
                 <?php } else { ?>
                 <option value="<?php echo $geo_zone['geo_zone_id']; ?>"><?php echo $geo_zone['name']; ?></option>
@@ -70,8 +70,8 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
             <div class="col-sm-10">
-              <select name="flat4_status" id="input-status" class="form-control">
-                <?php if ($flat4_status) { ?>
+              <select name="flat5_status" id="input-status" class="form-control">
+                <?php if ($flat5_status) { ?>
                 <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                 <option value="0"><?php echo $text_disabled; ?></option>
                 <?php } else { ?>
@@ -84,7 +84,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-sort-order"><?php echo $entry_sort_order; ?></label>
             <div class="col-sm-10">
-              <input type="text" name="flat4_sort_order" value="<?php echo $flat4_sort_order; ?>" placeholder="<?php echo $entry_sort_order; ?>" id="input-sort-order" class="form-control" />
+              <input type="text" name="flat5_sort_order" value="<?php echo $flat5_sort_order; ?>" placeholder="<?php echo $entry_sort_order; ?>" id="input-sort-order" class="form-control" />
             </div>
           </div>
         </form>

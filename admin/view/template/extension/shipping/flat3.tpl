@@ -32,6 +32,12 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-title"><?php echo $entry_title; ?></label>
+            <div class="col-sm-10">
+              <input type="text" name="flat3_title" value="<?php echo $flat3_title; ?>" placeholder="<?php echo $entry_title; ?>" id="input-title" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-tax-class"><?php echo $entry_tax_class; ?></label>
             <div class="col-sm-10">
               <select name="flat3_tax_class_id" id="input-tax-class" class="form-control">

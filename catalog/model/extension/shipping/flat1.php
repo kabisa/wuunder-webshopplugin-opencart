@@ -1,7 +1,7 @@
 <?php
 class ModelExtensionShippingFlat1 extends Model {
 	function getQuote($address) {
-		$this->load->language('extension/shipping/flat1');
+		$this->load->language('extension/shipping/flatwuunder');
 
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('flat1_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 
@@ -20,7 +20,7 @@ class ModelExtensionShippingFlat1 extends Model {
 
 			$quote_data['flat1'] = array(
 				'code'         => 'flat1.flat1',
-				'title'        => $this->language->get('text_description'),
+                'title'        => $this->config->get('flat1_title'),
 				'cost'         => $this->config->get('flat1_cost'),
 				'tax_class_id' => $this->config->get('flat1_tax_class_id'),
 				'text'         => $this->currency->format($this->tax->calculate($this->config->get('flat1_cost'), $this->config->get('flat1_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'])
