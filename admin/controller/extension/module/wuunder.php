@@ -258,7 +258,7 @@ class ControllerExtensionModuleWuunder extends Controller
             'weight' => $defWeight,
             'delivery_address' => $customerAdr,
             'pickup_address' => $pickupAdr,
-            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.0.0", "plugin" => "1.0"))
+            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.2.2", "plugin" => "1.0"))
         );
     }
 
