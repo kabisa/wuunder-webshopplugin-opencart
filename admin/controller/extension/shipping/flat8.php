@@ -32,6 +32,7 @@ class ControllerExtensionShippingFlat8 extends Controller {
 		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_sort_order'] = $this->language->get('entry_sort_order');
 
+        $data['wuunder_filter'] = $this->language->get('wuunder_filter');
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
 
@@ -104,6 +105,12 @@ class ControllerExtensionShippingFlat8 extends Controller {
 			$data['flat8_sort_order'] = $this->request->post['flat8_sort_order'];
 		} else {
 			$data['flat8_sort_order'] = $this->config->get('flat8_sort_order');
+		}
+
+		if (isset($this->request->post['flat8_wuunder_filter'])) {
+			$data['flat8_wuunder_filter'] = $this->request->post['flat8_wuunder_filter'];
+		} else {
+			$data['flat8_wuunder_filter'] = $this->config->get('flat8_wuunder_filter');
 		}
 
 		$data['header'] = $this->load->controller('common/header');

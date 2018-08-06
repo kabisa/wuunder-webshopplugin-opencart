@@ -32,6 +32,7 @@ class ControllerExtensionShippingFlat6 extends Controller {
 		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_sort_order'] = $this->language->get('entry_sort_order');
 
+        $data['wuunder_filter'] = $this->language->get('wuunder_filter');
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
 
@@ -105,6 +106,12 @@ class ControllerExtensionShippingFlat6 extends Controller {
 		} else {
 			$data['flat6_sort_order'] = $this->config->get('flat6_sort_order');
 		}
+
+        if (isset($this->request->post['flat6_wuunder_filter'])) {
+            $data['flat6_wuunder_filter'] = $this->request->post['flat6_wuunder_filter'];
+        } else {
+            $data['flat6_wuunder_filter'] = $this->config->get('flat6_wuunder_filter');
+        }
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

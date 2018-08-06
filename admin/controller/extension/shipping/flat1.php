@@ -32,7 +32,8 @@ class ControllerExtensionShippingFlat1 extends Controller {
 		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_sort_order'] = $this->language->get('entry_sort_order');
 
-		$data['button_save'] = $this->language->get('button_save');
+        $data['wuunder_filter'] = $this->language->get('wuunder_filter');
+        $data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
 
 		if (isset($this->error['warning'])) {
@@ -105,6 +106,12 @@ class ControllerExtensionShippingFlat1 extends Controller {
 		} else {
 			$data['flat1_sort_order'] = $this->config->get('flat1_sort_order');
 		}
+
+        if (isset($this->request->post['flat1_wuunder_filter'])) {
+            $data['flat1_wuunder_filter'] = $this->request->post['flat1_wuunder_filter'];
+        } else {
+            $data['flat1_wuunder_filter'] = $this->config->get('flat1_wuunder_filter');
+        }
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

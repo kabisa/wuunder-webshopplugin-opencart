@@ -87,6 +87,12 @@
               <input type="text" name="flat5_sort_order" value="<?php echo $flat5_sort_order; ?>" placeholder="<?php echo $entry_sort_order; ?>" id="input-sort-order" class="form-control" />
             </div>
           </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-sort-order"><?php echo $wuunder_filter; ?></label>
+            <div class="col-sm-10">
+              <input type="text" name="flat5_wuunder_filter" value="<?php echo $flat5_wuunder_filter; ?>" placeholder="<?php echo $wuunder_filter; ?>" id="input-wuunder-filter" class="form-control" />
+            </div>
+          </div>
         </form>
       </div>
     </div>

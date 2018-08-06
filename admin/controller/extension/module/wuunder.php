@@ -245,6 +245,15 @@ class ControllerExtensionModuleWuunder extends Controller
         $defWeight = 20000;
         $defValue = 25 * 100;
 
+        $filter = null;
+        if (!empty($orderData['shipping_code'])) {
+            $code = explode('.', $orderData['shipping_code'])[0];
+            $code = str_replace('flat', '', $code);
+            if (!empty($code)) {
+                    $filter = $this->config->get('flat' . $code . '_wuunder_filter');
+            }
+        }
+
         return array(
             'description' => implode(", ", $orderDescriptions),
             'personal_message' => $orderData['comment'],
@@ -258,7 +267,8 @@ class ControllerExtensionModuleWuunder extends Controller
             'weight' => $defWeight,
             'delivery_address' => $customerAdr,
             'pickup_address' => $pickupAdr,
-            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.2.2", "plugin" => "1.0"))
+            'preferred_service_level' => $filter,
+            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.2.3", "plugin" => "1.0"))
         );
     }
 
