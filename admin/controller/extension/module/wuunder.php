@@ -39,6 +39,8 @@ class ControllerExtensionModuleWuunder extends Controller
         $data['text_country'] = $this->language->get('text_country');
         $data['text_advanced_section'] = $this->language->get('text_advanced_section');
         $data['text_custom_field_housenumber'] = $this->language->get('text_custom_field_housenumber');
+        $data['text_base_url'] = $this->language->get('text_base_url');
+        $data['text_base_admin_url'] = $this->language->get('text_base_admin_url');
 
         $data['entry_status'] = $this->language->get('entry_status');
 
@@ -87,6 +89,8 @@ class ControllerExtensionModuleWuunder extends Controller
             $data['zip_code'] = $this->request->post['wuunder_zip_code'];
             $data['country'] = $this->request->post['wuunder_country'];
             $data['custom_housenumber'] = $this->request->post['wuunder_custom_housenumber'];
+            $data['base_url'] = $this->request->post['wuunder_base_url'];
+            $data['base_admin_url'] = $this->request->post['wuunder_base_admin_url'];
         } else {
             $data['wuunder_api'] = $this->config->get('wuunder_api');
             $data['staging_key'] = $this->config->get('wuunder_staging_key');
@@ -102,6 +106,8 @@ class ControllerExtensionModuleWuunder extends Controller
             $data['zip_code'] = $this->config->get('wuunder_zip_code');
             $data['country'] = $this->config->get('wuunder_country');
             $data['custom_housenumber'] = $this->config->get('wuunder_custom_housenumber');
+            $data['base_url'] = $this->config->get('wuunder_base_url');
+            $data['base_admin_url'] = $this->config->get('wuunder_base_admin_url');
         }
 
         $data['header'] = $this->load->controller('common/header');
@@ -239,10 +245,10 @@ class ControllerExtensionModuleWuunder extends Controller
             $totalValue += intval(floatval($orderProduct['price']) * 100 * intval($orderProduct['quantity']));
         }
 
-        $defLength = 80;
-        $defWidth = 50;
-        $defHeight = 35;
-        $defWeight = 20000;
+        $defLength = 30;
+        $defWidth = 20;
+        $defHeight = 20;
+        $defWeight = 1000;
         $defValue = 25 * 100;
 
         $filter = null;
@@ -268,7 +274,7 @@ class ControllerExtensionModuleWuunder extends Controller
             'delivery_address' => $customerAdr,
             'pickup_address' => $pickupAdr,
             'preferred_service_level' => $filter,
-            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.2.3", "plugin" => "1.0"))
+            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.2.3.2", "plugin" => "1.0"))
         );
     }
 
@@ -296,6 +302,13 @@ class ControllerExtensionModuleWuunder extends Controller
                 } else {
                     $base = HTTPS_SERVER;
                     $catBase = HTTP_CATALOG;
+                }
+
+                if ( !empty($this->config->get('wuunder_base_url'))) {
+                    $catBase = $this->config->get('wuunder_base_url');
+                }
+                if ( !empty($this->config->get('wuunder_base_admin_url'))) {
+                    $base = $this->config->get('wuunder_base_admin_url');
                 }
 
                 $wuunderData['redirect_url'] = $base . "index.php?route=sale/order&label=created&token=" . $this->session->data['token'];

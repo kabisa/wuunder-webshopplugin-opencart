@@ -149,6 +149,22 @@
                                            class="form-control" value="<?php echo $custom_housenumber; ?>"/>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"
+                                       for="wuunder_base_url"><?php echo $text_base_url; ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="wuunder_base_url" name="wuunder_base_url"
+                                           class="form-control" value="<?php echo $base_url; ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"
+                                       for="wuunder_base_admin_url"><?php echo $text_base_admin_url; ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="wuunder_base_admin_url" name="wuunder_base_admin_url"
+                                           class="form-control" value="<?php echo $base_admin_url; ?>"/>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
