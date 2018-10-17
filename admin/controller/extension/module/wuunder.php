@@ -280,6 +280,23 @@ class ControllerExtensionModuleWuunder extends Controller
 
     public function generateBookingUrl()
     {
+        // first determine base and catbase urls
+        if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+            $base = HTTP_SERVER;
+            $catBase = HTTP_CATALOG;
+        } else {
+            $base = HTTPS_SERVER;
+            $catBase = HTTP_CATALOG;
+        }
+
+        if ( !empty($this->config->get('wuunder_base_url'))) {
+            $catBase = $this->config->get('wuunder_base_url');
+        }
+        if ( !empty($this->config->get('wuunder_base_admin_url'))) {
+            $base = $this->config->get('wuunder_base_admin_url');
+        }
+
+
         if (isset($_REQUEST['order'])) {
             $order_id = $_REQUEST['order'];
             $this->load->model('extension/module/wuunder');
@@ -295,22 +312,6 @@ class ControllerExtensionModuleWuunder extends Controller
                 }
 
                 $wuunderData = $this->buildWuunderData($order_id);
-
-                if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
-                    $base = HTTP_SERVER;
-                    $catBase = HTTP_CATALOG;
-                } else {
-                    $base = HTTPS_SERVER;
-                    $catBase = HTTP_CATALOG;
-                }
-
-                if ( !empty($this->config->get('wuunder_base_url'))) {
-                    $catBase = $this->config->get('wuunder_base_url');
-                }
-                if ( !empty($this->config->get('wuunder_base_admin_url'))) {
-                    $base = $this->config->get('wuunder_base_admin_url');
-                }
-
                 $wuunderData['redirect_url'] = $base . "index.php?route=sale/order&label=created&token=" . $this->session->data['token'];
                 $wuunderData['webhook_url'] = $catBase . "index.php?route=extension/module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token;
 
@@ -351,10 +352,10 @@ class ControllerExtensionModuleWuunder extends Controller
                 }
                 header("Location: " . $url);
             } else {
-                header("Location: " . $this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
+                header("Location: " . $catBase . "index.php?route=sale/order&token=" . $this->session->data['token']);
             }
         } else {
-            header("Location: " . $this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
+            header("Location: " . $catBase . "index.php?route=sale/order&token=" . $this->session->data['token']);
         }
     }
 }
