@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>wuunder styling</name>
+    <version>1.0</version>
+    <author>wuunder</author>
+    <file path="admin/view/template/common/header.tpl">
+        <operation info="replace ABC with 123">
+            <search><![CDATA[
+                <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+                ]]></search>
+            <add position="replace"><![CDATA[
+                <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+                <link type="text/css" href="view/stylesheet/wuunder.css" rel="stylesheet" media="screen" />
+                ]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/sale/order_list.tpl">
+        <operation info="add wuunder icons">
+            <search><![CDATA[
+                <a href="<?php echo $order['view']; ?>
+                ]]></search>
+            <add position="replace"><![CDATA[
+                <ul class="wuunder-icons">
+                <?php if (is_null($order['label_id'])) {
+                    if (is_null($order['booking_url']) || empty($order['booking_url'])) { ?>
+                        <a href="<?php echo $order['generate_booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="<?php echo $order['base']; ?>view/image/wuunder/create-label.png"/></a>
+                    <?php } else { ?>
+                        <a href="<?php echo $order['booking_url']; ?>" title="<?php echo $create_label; ?>"><img class="wuunder-icon" src="<?php echo $order['base']; ?>view/image/wuunder/create-label.png" /></a>
+                    <?php }
+                } else { ?>
+                    <a href="<?php echo $order['label_url']; ?>" title="<?php echo $download_label; ?>" target="_blank"><img class="wuunder-icon" src="<?php echo $order['base']; ?>view/image/wuunder/print-label.png" /></a>
+                    <a href="<?php echo $order['label_tt_url']; ?>" title="<?php echo $follow_shipment; ?>" target="_blank"><img class="wuunder-icon" src="<?php echo $order['base']; ?>view/image/wuunder/in-transit.png" /></a>
+                <?php } ?>
+                </ul>
+                <a href="<?php echo $order['view']; ?>
+                ]]></add>
+        </operation>
+    </file>
+    <file path="admin/controller/sale/order.php">
+        <operation info="add order info">
+            <search><![CDATA[
+            $results = $this->model_sale_order->getOrders($filter_data);
+                ]]></search>
+            <add position="replace" offset="4"><![CDATA[
+            $data['create_label'] = $this->load->controller('module/wuunder/getCreateLabelMessage');
+            $data['download_label'] = $this->load->controller('module/wuunder/getDownloadLabelMessage');
+            $data['follow_shipment'] = $this->load->controller('module/wuunder/getFollowShipmentMessage');
+
+            $results = $this->model_sale_order->getOrders($filter_data);
+            $this->load->model('module/wuunder');
+                foreach ($results as $result) {
+            $label_info = $this->load->controller('module/wuunder/getLabelInfo', $result['order_id']);
+            if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+                $base = HTTP_SERVER;
+             } else {
+                $base = HTTPS_SERVER;
+             }
+			$data['orders'][] = array(
+				'order_id'      => $result['order_id'],
+				'label_id'      => ($label_info ? $label_info['label_id'] : null),
+				'label_url'      => ($label_info ? $label_info['label_url'] : null),
+				'label_tt_url'      => ($label_info ? $label_info['label_tt_url'] : null),
+				'booking_url'      => ($label_info ? $label_info['booking_url'] : null),
+				'base'          => $base,
+				'order_status_code' => $this->model_module_wuunder->getOrderStatusCode($result['order_id']),
+				'generate_booking_url'  => $base . "index.php?route=module/wuunder/generateBookingUrl&order=" . $result['order_id'] . "&token=" . $this->session->data['token'],
+                ]]></add>
+        </operation>
+        <operation info="add warning info">
+            <search><![CDATA[
+            if (isset($this->request->post['selected'])) {
+                ]]></search>
+            <add position="replace"><![CDATA[
+            if (array_key_exists("label", $_REQUEST) && $_REQUEST['label'] === "created") {
+                $data['success'] = $label_info = $this->load->controller('module/wuunder/getLabelCreatedMessage');
+            }
+            if (isset($this->request->post['selected'])) {
+                ]]></add>
+        </operation>
+    </file>
+</modification>
