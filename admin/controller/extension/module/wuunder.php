@@ -41,6 +41,9 @@ class ControllerExtensionModuleWuunder extends Controller
         $data['text_custom_field_housenumber'] = $this->language->get('text_custom_field_housenumber');
         $data['text_base_url'] = $this->language->get('text_base_url');
         $data['text_base_admin_url'] = $this->language->get('text_base_admin_url');
+        $data['text_shipping_section'] = $this->language->get('text_shipping_section');
+        $data['text_shipping_dimensions'] = $this->language->get('text_shipping_dimensions');
+        $data['text_shipping_weight'] = $this->language->get('text_shipping_weight');
 
         $data['entry_status'] = $this->language->get('entry_status');
 
@@ -91,6 +94,10 @@ class ControllerExtensionModuleWuunder extends Controller
             $data['custom_housenumber'] = $this->request->post['wuunder_custom_housenumber'];
             $data['base_url'] = $this->request->post['wuunder_base_url'];
             $data['base_admin_url'] = $this->request->post['wuunder_base_admin_url'];
+            $data['shipping_length'] = $this->request->post['wuunder_shipping_length'];
+            $data['shipping_width'] = $this->request->post['wuunder_shipping_width'];
+            $data['shipping_height'] = $this->request->post['wuunder_shipping_height'];
+            $data['shipping_weight'] = $this->request->post['wuunder_shipping_weight'];
         } else {
             $data['wuunder_api'] = $this->config->get('wuunder_api');
             $data['staging_key'] = $this->config->get('wuunder_staging_key');
@@ -108,6 +115,10 @@ class ControllerExtensionModuleWuunder extends Controller
             $data['custom_housenumber'] = $this->config->get('wuunder_custom_housenumber');
             $data['base_url'] = $this->config->get('wuunder_base_url');
             $data['base_admin_url'] = $this->config->get('wuunder_base_admin_url');
+            $data['shipping_length'] = $this->config->get('wuunder_shipping_length');
+            $data['shipping_width'] = $this->config->get('wuunder_shipping_width');
+            $data['shipping_height'] = $this->config->get('wuunder_shipping_height');
+            $data['shipping_weight'] = $this->config->get('wuunder_shipping_weight');
         }
 
         $data['header'] = $this->load->controller('common/header');
@@ -245,11 +256,24 @@ class ControllerExtensionModuleWuunder extends Controller
             $totalValue += intval(floatval($orderProduct['price']) * 100 * intval($orderProduct['quantity']));
         }
 
-        $defLength = 30;
-        $defWidth = 20;
-        $defHeight = 20;
-        $defWeight = 1000;
+        $defLength = 80;
+        $defWidth = 50;
+        $defHeight = 35;
+        $defWeight = 20000;
         $defValue = 25 * 100;
+
+        if (!empty($this->config->get('wuunder_shipping_length'))) {
+            $defLength = $this->config->get('wuunder_shipping_length');
+        }
+        if (!empty($this->config->get('wuunder_shipping_width'))) {
+            $defWidth = $this->config->get('wuunder_shipping_width');
+        }
+        if (!empty($this->config->get('wuunder_shipping_height'))) {
+            $defHeight = $this->config->get('wuunder_shipping_height');
+        }
+        if (!empty($this->config->get('wuunder_shipping_weight'))) {
+            $defWeight = $this->config->get('wuunder_shipping_weight');
+        }
 
         $filter = null;
         if (!empty($orderData['shipping_code'])) {

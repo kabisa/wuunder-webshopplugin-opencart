@@ -25,6 +25,9 @@ $_['text_advanced_section'] = 'Advanced settings';
 $_['text_custom_field_housenumber'] = 'Custom field Housenumber (id)';
 $_['text_base_url'] = 'Base url';
 $_['text_base_admin_url'] = 'Base admin url';
+$_['text_shipping_section'] = 'Shipping details';
+$_['text_shipping_dimensions'] = 'Default dimensions in CM (LxWxH)';
+$_['text_shipping_weight'] = 'Default weight in Grams';
 
 $_['label_created'] = "Label is successfully created";
 $_['create_label'] = "Create shipment label";
