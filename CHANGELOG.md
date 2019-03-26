@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ### Added
 
-- Added multiple checkout shipping options #4(https://github.com/kabisa/wuunder-webshopplugin-opencart/pull/44)
+- Added multiple checkout shipping options (#4(https://github.com/kabisa/wuunder-webshopplugin-opencart/pull/44))
 
 
 ## [1.1.0](https://github.com/kabisa/wuunder-webshopplugin-opencart/tree/1.1.0) (2018-02-28)
