@@ -39,6 +39,11 @@ class ControllerExtensionModuleWuunder extends Controller
         $data['text_country'] = $this->language->get('text_country');
         $data['text_advanced_section'] = $this->language->get('text_advanced_section');
         $data['text_custom_field_housenumber'] = $this->language->get('text_custom_field_housenumber');
+        $data['text_base_url'] = $this->language->get('text_base_url');
+        $data['text_base_admin_url'] = $this->language->get('text_base_admin_url');
+        $data['text_shipping_section'] = $this->language->get('text_shipping_section');
+        $data['text_shipping_dimensions'] = $this->language->get('text_shipping_dimensions');
+        $data['text_shipping_weight'] = $this->language->get('text_shipping_weight');
 
         $data['entry_status'] = $this->language->get('entry_status');
 
@@ -87,6 +92,12 @@ class ControllerExtensionModuleWuunder extends Controller
             $data['zip_code'] = $this->request->post['wuunder_zip_code'];
             $data['country'] = $this->request->post['wuunder_country'];
             $data['custom_housenumber'] = $this->request->post['wuunder_custom_housenumber'];
+            $data['base_url'] = $this->request->post['wuunder_base_url'];
+            $data['base_admin_url'] = $this->request->post['wuunder_base_admin_url'];
+            $data['shipping_length'] = $this->request->post['wuunder_shipping_length'];
+            $data['shipping_width'] = $this->request->post['wuunder_shipping_width'];
+            $data['shipping_height'] = $this->request->post['wuunder_shipping_height'];
+            $data['shipping_weight'] = $this->request->post['wuunder_shipping_weight'];
         } else {
             $data['wuunder_api'] = $this->config->get('wuunder_api');
             $data['staging_key'] = $this->config->get('wuunder_staging_key');
@@ -102,6 +113,12 @@ class ControllerExtensionModuleWuunder extends Controller
             $data['zip_code'] = $this->config->get('wuunder_zip_code');
             $data['country'] = $this->config->get('wuunder_country');
             $data['custom_housenumber'] = $this->config->get('wuunder_custom_housenumber');
+            $data['base_url'] = $this->config->get('wuunder_base_url');
+            $data['base_admin_url'] = $this->config->get('wuunder_base_admin_url');
+            $data['shipping_length'] = $this->config->get('wuunder_shipping_length');
+            $data['shipping_width'] = $this->config->get('wuunder_shipping_width');
+            $data['shipping_height'] = $this->config->get('wuunder_shipping_height');
+            $data['shipping_weight'] = $this->config->get('wuunder_shipping_weight');
         }
 
         $data['header'] = $this->load->controller('common/header');
@@ -245,6 +262,19 @@ class ControllerExtensionModuleWuunder extends Controller
         $defWeight = 20000;
         $defValue = 25 * 100;
 
+        if (!empty($this->config->get('wuunder_shipping_length'))) {
+            $defLength = $this->config->get('wuunder_shipping_length');
+        }
+        if (!empty($this->config->get('wuunder_shipping_width'))) {
+            $defWidth = $this->config->get('wuunder_shipping_width');
+        }
+        if (!empty($this->config->get('wuunder_shipping_height'))) {
+            $defHeight = $this->config->get('wuunder_shipping_height');
+        }
+        if (!empty($this->config->get('wuunder_shipping_weight'))) {
+            $defWeight = $this->config->get('wuunder_shipping_weight');
+        }
+
         $filter = null;
         if (!empty($orderData['shipping_code'])) {
             $code = explode('.', $orderData['shipping_code'])[0];
@@ -268,12 +298,29 @@ class ControllerExtensionModuleWuunder extends Controller
             'delivery_address' => $customerAdr,
             'pickup_address' => $pickupAdr,
             'preferred_service_level' => $filter,
-            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.2.3", "plugin" => "1.0"))
+            'source' => array("product" => "Opencart 2.3.0.2 extension", "version" => array("build" => "1.2.3.2", "plugin" => "1.0"))
         );
     }
 
     public function generateBookingUrl()
     {
+        // first determine base and catbase urls
+        if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+            $base = HTTP_SERVER;
+            $catBase = HTTP_CATALOG;
+        } else {
+            $base = HTTPS_SERVER;
+            $catBase = HTTP_CATALOG;
+        }
+
+        if ( !empty($this->config->get('wuunder_base_url'))) {
+            $catBase = $this->config->get('wuunder_base_url');
+        }
+        if ( !empty($this->config->get('wuunder_base_admin_url'))) {
+            $base = $this->config->get('wuunder_base_admin_url');
+        }
+
+
         if (isset($_REQUEST['order'])) {
             $order_id = $_REQUEST['order'];
             $this->load->model('extension/module/wuunder');
@@ -289,15 +336,6 @@ class ControllerExtensionModuleWuunder extends Controller
                 }
 
                 $wuunderData = $this->buildWuunderData($order_id);
-
-                if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
-                    $base = HTTP_SERVER;
-                    $catBase = HTTP_CATALOG;
-                } else {
-                    $base = HTTPS_SERVER;
-                    $catBase = HTTP_CATALOG;
-                }
-
                 $wuunderData['redirect_url'] = $base . "index.php?route=sale/order&label=created&token=" . $this->session->data['token'];
                 $wuunderData['webhook_url'] = $catBase . "index.php?route=extension/module/wuunder/webhook&order=" . $order_id . "&token=" . $booking_token;
 
@@ -338,10 +376,10 @@ class ControllerExtensionModuleWuunder extends Controller
                 }
                 header("Location: " . $url);
             } else {
-                header("Location: " . $this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
+                header("Location: " . $catBase . "index.php?route=sale/order&token=" . $this->session->data['token']);
             }
         } else {
-            header("Location: " . $this->config->get('site_base') . "index.php?route=sale/order&token=" . $this->session->data['token']);
+            header("Location: " . $catBase . "index.php?route=sale/order&token=" . $this->session->data['token']);
         }
     }
 }

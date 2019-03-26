@@ -139,6 +139,35 @@
                                        value="<?php echo $country; ?>"/>
                             </div>
                         </div>
+                        <h2><?php echo $text_shipping_section; ?></h2>
+                        <div class="well well-lg">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"
+                                       for="wuunder_shipping_dimensions"><?php echo $text_shipping_dimensions; ?></label>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-4">
+                                        <input type="text" id="wuunder_shipping_length" name="wuunder_shipping_length"
+                                               class="form-control" value="<?php echo $shipping_length; ?>"/>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="wuunder_shipping_width" name="wuunder_shipping_width"
+                                               class="form-control" value="<?php echo $shipping_width; ?>"/>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="wuunder_shipping_height" name="wuunder_shipping_height"
+                                               class="form-control" value="<?php echo $shipping_height; ?>"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"
+                                       for="wuunder_base_url"><?php echo $text_shipping_weight; ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="wuunder_shipping_weight" name="wuunder_shipping_weight"
+                                           class="form-control" value="<?php echo $shipping_weight; ?>"/>
+                                </div>
+                            </div>
+                        </div>
                         <h2><?php echo $text_advanced_section; ?></h2>
                         <div class="well well-lg">
                             <div class="form-group">
@@ -147,6 +176,22 @@
                                 <div class="col-sm-10">
                                     <input type="text" id="wuunder_custom_housenumber" name="wuunder_custom_housenumber"
                                            class="form-control" value="<?php echo $custom_housenumber; ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"
+                                       for="wuunder_base_url"><?php echo $text_base_url; ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="wuunder_base_url" name="wuunder_base_url"
+                                           class="form-control" value="<?php echo $base_url; ?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"
+                                       for="wuunder_base_admin_url"><?php echo $text_base_admin_url; ?></label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="wuunder_base_admin_url" name="wuunder_base_admin_url"
+                                           class="form-control" value="<?php echo $base_admin_url; ?>"/>
                                 </div>
                             </div>
                         </div>

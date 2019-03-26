@@ -23,6 +23,11 @@ $_['text_zip_code'] = 'Postcode';
 $_['text_country'] = 'land code (ISO 3166-1 alpha-2 format)';
 $_['text_advanced_section'] = 'Geadvanceerde instellingen';
 $_['text_custom_field_housenumber'] = 'Custom field Huisnummer (id)';
+$_['text_base_url'] = 'Base url';
+$_['text_base_admin_url'] = 'Base admin url';
+$_['text_shipping_section'] = 'Verzendgegevens';
+$_['text_shipping_dimensions'] = 'Default dimensies in cm (LxBxH)';
+$_['text_shipping_weight'] = 'Default gewicht in gram';
 
 $_['label_created'] = "Label is succesvol aangemaakt";
 $_['create_label'] = "Verzendlabel aanmaken";
