@@ -1,4 +1,17 @@
 # Change Log
+All notable changes to this project will be documented in this file.
+Please file changes under `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` or `Security`.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/).
+
+## Unreleased
+
+## [2.x.x] - 2019-03-26
+
+### Added
+
+- Added multiple checkout shipping options #4(https://github.com/kabisa/wuunder-webshopplugin-opencart/pull/44)
+
 
 ## [1.1.0](https://github.com/kabisa/wuunder-webshopplugin-opencart/tree/1.1.0) (2018-02-28)
 [Full Changelog](https://github.com/kabisa/wuunder-webshopplugin-opencart/compare/1.0.0...1.1.0)
