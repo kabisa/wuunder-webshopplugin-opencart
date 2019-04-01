@@ -1,4 +1,42 @@
 # Change Log
+All notable changes to this project will be documented in this file.
+Please file changes under `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` or `Security`.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/).
+
+## Unreleased
+## [1.2.3 pre-release](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.3) - OC2.3.0.2 - 2018-08-06
+
+Only for OC 2.3.0.2
+
+## Added
+
+- Added preferred_service_level filter feature [@timoj](https://github.com/timoj)
+
+
+## [1.2.2 pre-release](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.2) - OC2.3.0.2 - 2018-06-29
+
+Only for OC 2.3.0.2
+
+## Added
+
+- Added 8 flat rate wuunder shipping methods [@timoj](https://github.com/timoj)
+
+## [1.2.1 pre-release](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.1) - OC2.3.0.2 - 2018-05-22
+
+Only for OC 2.3.0.2
+
+### Fix
+
+- Bugfix for structural changes [@timoj](https://github.com/timoj)
+
+## [1.2.0](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.0) - 2018-03-28
+
+### Fix
+
+- Fix wuunder api domain [@timoj](https://github.com/timoj)
+
+# Old change Log
 
 ## [1.1.0](https://github.com/kabisa/wuunder-webshopplugin-opencart/tree/1.1.0) (2018-02-28)
 [Full Changelog](https://github.com/kabisa/wuunder-webshopplugin-opencart/compare/1.0.0...1.1.0)
