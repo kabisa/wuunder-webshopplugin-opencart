@@ -4,8 +4,8 @@ Please file changes under `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` o
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## Pre-release
-## [1.2.3](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.3) - OC2.3.0.2 - 2018-08-06
+## Unreleased
+## [1.2.3 pre-release](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.3) - OC2.3.0.2 - 2018-08-06
 
 Only for OC 2.3.0.2
 
@@ -14,7 +14,7 @@ Only for OC 2.3.0.2
 - Added preferred_service_level filter feature [@timoj](https://github.com/timoj)
 
 
-## [1.2.2](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.2) - OC2.3.0.2 - 2018-06-29
+## [1.2.2 pre-release](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.2) - OC2.3.0.2 - 2018-06-29
 
 Only for OC 2.3.0.2
 
@@ -22,16 +22,13 @@ Only for OC 2.3.0.2
 
 - Added 8 flat rate wuunder shipping methods [@timoj](https://github.com/timoj)
 
-## [1.2.1](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.1) - OC2.3.0.2 - 2018-05-22
+## [1.2.1 pre-release](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.1) - OC2.3.0.2 - 2018-05-22
 
 Only for OC 2.3.0.2
 
 ### Fix
 
 - Bugfix for structural changes [@timoj](https://github.com/timoj)
-
-
-## Released
 
 ## [1.2.0](https://github.com/wuunder/wuunder-webshopplugin-opencart/releases/tag/1.2.0) - 2018-03-28
 
