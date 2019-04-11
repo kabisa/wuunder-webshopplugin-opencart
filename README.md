@@ -15,7 +15,7 @@ We make shipping any parcel, pallet and document easy, personal and efficient. A
 * Scroll up and click "save", Wuunder is now added to your orders page and is ready for use!
 
 ## Changelog ##
-Changelog can be found [here](https://github.com/kabisa/wuunder-webshopplugin-opencart/blob/master/CHANGELOG.md).
+Changelog can be found [here](CHANGELOG.md).
 
 ## Troubles ##
 Troubles caused by use of other ports than HTTP can be fixed but are not part of the standard implementation.
